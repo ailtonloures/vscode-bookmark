@@ -9,7 +9,6 @@
 		"name": "Ailton Loures",
 		"email": "dev.ailtonloures@proton.me"
 	},
-	"type": "module",
 	"main": "src/index.js",
 	"scripts": {
 		"start": "electron-forge start",
