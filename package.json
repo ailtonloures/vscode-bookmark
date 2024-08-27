@@ -1,7 +1,7 @@
 {
 	"name": "vscode-bookmark",
-	"productName": "vscode-bookmark",
-	"version": "1.0.0",
+	"productName": "VSCode Bookmark",
+	"version": "0.1.0",
 	"description": "A utility for vscode developed with electron",
 	"license": "MIT",
 	"keywords": [],
@@ -15,7 +15,7 @@
 		"package": "electron-forge package",
 		"make": "electron-forge make",
 		"publish": "electron-forge publish",
-		"lint": "echo \"No linting configured\""
+		"lint": "eslint --fix"
 	},
 	"dependencies": {
 		"electron-squirrel-startup": "^1.0.1"

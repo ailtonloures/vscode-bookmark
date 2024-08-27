@@ -90,3 +90,6 @@ typings/
 
 # Electron-Forge
 out/
+
+# To-do file
+.todo
