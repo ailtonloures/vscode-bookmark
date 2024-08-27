@@ -11,7 +11,8 @@
 	},
 	"main": "src/index.js",
 	"scripts": {
-		"start": "electron-forge start",
+		"start": "electron-forge start --enable-logging",
+		"make:icons": "electron-icon-maker --input=./assets/icon.png --output=./assets",
 		"package": "electron-forge package",
 		"make": "electron-forge make",
 		"publish": "electron-forge publish",
@@ -31,6 +32,7 @@
 		"@electron/fuses": "^1.8.0",
 		"@eslint/js": "^9.9.1",
 		"electron": "32.0.1",
+		"electron-icon-maker": "^0.0.5",
 		"eslint": "^9.9.1",
 		"eslint-config-prettier": "^9.1.0",
 		"globals": "^15.9.0",
