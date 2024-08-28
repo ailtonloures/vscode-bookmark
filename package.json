@@ -12,13 +12,15 @@
 	"scripts": {
 		"start": "electron-forge start --enable-logging",
 		"make:icons": "electron-icon-maker --input=./assets/icon.png --output=./assets",
+		"test": "vitest run --sequence.shuffle.files",
+		"lint": "eslint --fix",
 		"package": "electron-forge package",
 		"make": "electron-forge make",
-		"publish": "electron-forge publish",
-		"lint": "eslint --fix"
+		"publish": "electron-forge publish"
 	},
 	"dependencies": {
-		"electron-squirrel-startup": "^1.0.1"
+		"electron-squirrel-startup": "^1.0.1",
+		"lokijs": "^1.5.12"
 	},
 	"devDependencies": {
 		"@electron-forge/cli": "^7.4.0",
@@ -35,6 +37,7 @@
 		"eslint": "^9.9.1",
 		"eslint-config-prettier": "^9.1.0",
 		"globals": "^15.9.0",
-		"prettier": "^3.3.3"
+		"prettier": "^3.3.3",
+		"vitest": "^2.0.5"
 	}
 }

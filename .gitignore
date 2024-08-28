@@ -93,3 +93,7 @@ out/
 
 # To-do file
 *.todo
+
+# In-Memory database file
+*.db
+*.sqlite
