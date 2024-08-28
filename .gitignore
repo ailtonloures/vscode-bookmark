@@ -92,4 +92,4 @@ typings/
 out/
 
 # To-do file
-.todo
+*.todo
