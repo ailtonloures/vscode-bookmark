@@ -8,7 +8,7 @@
 		"name": "Ailton Loures",
 		"email": "dev.ailtonloures@proton.me"
 	},
-	"main": "src/index.js",
+	"main": "src/main.js",
 	"scripts": {
 		"start": "electron-forge start --enable-logging",
 		"make:icons": "electron-icon-maker --input=./assets/icon.png --output=./assets",
