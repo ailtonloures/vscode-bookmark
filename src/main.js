@@ -1,42 +1,91 @@
-const { app, Tray, Menu, nativeImage } = require('electron/main');
+const { app, dialog, Tray, Menu, nativeImage } = require('electron/main');
+const { spawn } = require('node:child_process');
 const path = require('node:path');
 
-function createContextMenu() {
-	const contextMenu = Menu.buildFromTemplate([
-		{ label: getTitle(), type: 'normal', role: 'about', icon: getIcon() },
-		{ label: 'Item2', type: 'radio' },
-		{ label: 'Item3', type: 'radio' },
-		{ label: 'Item4', type: 'radio' },
-	]);
+const {
+	listBookmarks,
+	createBookmark,
+	deleteBookmark,
+} = require('./repository/main-repository');
 
-	return contextMenu;
-}
+let tray = null;
 
-function createTray({ title, icon, contextMenu }) {
-	const tray = new Tray(icon);
+function createTray({ contextMenu }) {
+	const appLabel = getAppLabel();
+	const appIcon = getAppIcon();
 
-	tray.setToolTip(title);
+	if (!tray) tray = new Tray(appIcon);
+
+	tray.setToolTip(appLabel);
 	tray.setContextMenu(contextMenu);
 
 	tray.on('click', () => tray.popUpContextMenu());
 }
 
-function getIcon() {
+function getAppLabel() {
+	return `${app.getName()} - v${app.getVersion()}`;
+}
+
+function getAppIcon() {
 	return nativeImage.createFromPath(
 		path.resolve(__dirname, '..', 'assets/icons/png/16x16.png'),
 	);
 }
 
-function getTitle() {
-	return `${app.getName()} - v${app.getVersion()}`;
+function createContextMenu() {
+	const bookmarks = listBookmarks().map(({ basename, path }) => ({
+		label: basename,
+		submenu: [
+			{
+				label: 'Open',
+				click: () => {
+					spawn('code', [path], { shell: true });
+				},
+			},
+			{
+				label: 'Remove',
+				click: () => {
+					deleteBookmark({ path });
+					renderTray();
+				},
+			},
+		],
+	}));
+
+	const contextMenu = Menu.buildFromTemplate([
+		{
+			label: 'Add a vscode bookmark',
+			type: 'normal',
+			click: async () => {
+				const { canceled, filePaths } = await dialog.showOpenDialog({
+					properties: ['openDirectory'],
+				});
+
+				if (canceled) return;
+
+				const filePath = filePaths.at(0);
+
+				createBookmark({
+					path: filePath,
+					basename: path.basename(filePath),
+				});
+
+				renderTray();
+			},
+		},
+		{ type: 'separator' },
+		...bookmarks,
+	]);
+
+	return contextMenu;
 }
 
-app.whenReady().then(() => {
+function renderTray() {
 	const contextMenu = createContextMenu();
 
 	createTray({
-		title: getTitle(),
-		icon: getIcon(),
 		contextMenu,
 	});
-});
+}
+
+app.whenReady().then(() => renderTray());
