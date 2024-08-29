@@ -4,10 +4,7 @@
 	"version": "0.1.0",
 	"description": "A utility for vscode developed with electron",
 	"license": "MIT",
-	"author": {
-		"name": "Ailton Loures",
-		"email": "dev.ailtonloures@proton.me"
-	},
+	"author": "Ailton Loures",
 	"type": "module",
 	"main": "src/main.js",
 	"scripts": {
