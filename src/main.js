@@ -11,12 +11,13 @@ function createTray({ contextMenu }) {
 		const appLabel = getAppLabel();
 		const appIcon = getAppIcon();
 
-	if (!tray) tray = new Tray(appIcon);
+		tray = new Tray(appIcon);
+		tray.setToolTip(appLabel);
 
-	tray.setToolTip(appLabel);
+		tray.on('click', () => tray.popUpContextMenu());
+	}
+
 	tray.setContextMenu(contextMenu);
-
-	tray.on('click', () => tray.popUpContextMenu());
 }
 
 function getAppLabel() {
