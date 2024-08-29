@@ -5,3 +5,4 @@
 <br/>
 VSCode Bookmark
 </h1>
+<p align="center">A utility for vscode developed with electron.</p>
