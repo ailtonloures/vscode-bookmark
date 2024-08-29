@@ -1,12 +1,12 @@
-const { app, dialog, Tray, Menu, nativeImage } = require('electron/main');
-const { spawn } = require('node:child_process');
-const path = require('node:path');
+import { app, dialog, Menu, nativeImage, Tray } from 'electron/main';
+import { spawn } from 'node:child_process';
+import path from 'node:path';
 
-const {
-	listBookmarks,
+import {
 	createBookmark,
 	deleteBookmark,
-} = require('./repository/main-repository');
+	listBookmarks,
+} from './repository/main-repository.js';
 
 let tray = null;
 
@@ -28,7 +28,7 @@ function getAppLabel() {
 
 function getAppIcon() {
 	return nativeImage.createFromPath(
-		path.resolve(__dirname, '..', 'assets/icons/png/16x16.png'),
+		path.resolve(import.meta.dirname, '..', 'assets/icons/png/16x16.png'),
 	);
 }
 

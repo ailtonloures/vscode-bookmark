@@ -1,30 +1,24 @@
-const { dbInstance } = require('./../factory');
+import { dbInstance } from './../factory/index.js';
 
 const collectionName = 'bookmarks';
 const collection =
 	dbInstance().getCollection(collectionName) ||
 	dbInstance().addCollection(collectionName);
 
-function createBookmark(input) {
+export function createBookmark(input) {
 	const createdBookmark = collection.insert(input);
 
 	return createdBookmark;
 }
 
-function listBookmarks() {
+export function listBookmarks() {
 	return collection.chain().simplesort('basename').data();
 }
 
-function deleteBookmark(input) {
+export function deleteBookmark(input) {
 	collection.findAndRemove({
 		path: {
 			$eq: input.path,
 		},
 	});
 }
-
-module.exports = {
-	createBookmark,
-	listBookmarks,
-	deleteBookmark,
-};

@@ -1,12 +1,17 @@
-const path = require('node:path');
-const fs = require('node:fs');
+import fs from 'node:fs';
+import path from 'node:path';
 
-const Loki = require('lokijs');
+import Loki from 'lokijs';
 
 const factory = {
 	instance: null,
 	createInstance: () => {
-		const databasePath = path.resolve(__dirname, '..', '..', 'data.db');
+		const databasePath = path.resolve(
+			import.meta.dirname,
+			'..',
+			'..',
+			'data.db',
+		);
 
 		if (!fs.existsSync(databasePath)) {
 			fs.openSync(databasePath, 'w+');
@@ -20,6 +25,6 @@ const factory = {
 	},
 };
 
-module.exports = {
-	dbInstance: () => factory.createInstance(),
-};
+export function dbInstance() {
+	return factory.createInstance();
+}

@@ -1,1 +1,1 @@
-module.exports = require('./loki-factory');
+export * from './loki-factory.js';

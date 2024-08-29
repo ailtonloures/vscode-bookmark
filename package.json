@@ -8,6 +8,7 @@
 		"name": "Ailton Loures",
 		"email": "dev.ailtonloures@proton.me"
 	},
+	"type": "module",
 	"main": "src/main.js",
 	"scripts": {
 		"start": "electron-forge start --enable-logging",
@@ -20,6 +21,7 @@
 	},
 	"dependencies": {
 		"electron-squirrel-startup": "^1.0.1",
+		"electron-store": "^10.0.0",
 		"lokijs": "^1.5.12"
 	},
 	"devDependencies": {

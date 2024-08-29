@@ -6,7 +6,7 @@ import { describe, expect, test } from 'vitest';
 
 import { dbInstance } from './loki-factory';
 
-const databasePath = path.resolve(__dirname, '..', '..', 'data.db');
+const databasePath = path.resolve(import.meta.dirname, '..', '..', 'data.db');
 
 describe('loki-factory integration test', () => {
 	test('should be have a instance from loki', () => {
