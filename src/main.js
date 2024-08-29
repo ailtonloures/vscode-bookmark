@@ -31,24 +31,26 @@ function getAppIcon() {
 }
 
 function createContextMenu() {
-	const bookmarks = getBookmarks().map(({ basename, path, id }) => ({
-		label: basename,
-		submenu: [
-			{
-				label: 'Open',
-				click: () => {
-					spawn('code', [path], { shell: true });
+	const bookmarks = getBookmarks()
+		.slice(0, 10)
+		.map(({ basename, path, id }) => ({
+			label: basename,
+			submenu: [
+				{
+					label: 'Open',
+					click: () => {
+						spawn('code', [path], { shell: true });
+					},
 				},
-			},
-			{
-				label: 'Remove',
-				click: () => {
-					deleteBookmark(id);
-					renderTray();
+				{
+					label: 'Remove',
+					click: () => {
+						deleteBookmark(id);
+						renderTray();
+					},
 				},
-			},
-		],
-	}));
+			],
+		}));
 
 	const contextMenu = Menu.buildFromTemplate([
 		{

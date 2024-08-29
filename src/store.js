@@ -7,12 +7,12 @@ export function createBookmark({ path, basename }) {
 	store.set(
 		storeName,
 		JSON.stringify([
-			...getBookmarks(),
 			{
 				path,
 				basename,
 				id: new Date().getTime(),
 			},
+			...getBookmarks(),
 		]),
 	);
 }
