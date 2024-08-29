@@ -73,6 +73,10 @@ function createContextMenu() {
 		},
 		{ type: 'separator' },
 		...bookmarks,
+		{
+			label: 'Quit',
+			click: () => app.quit(),
+		},
 	]);
 
 	return contextMenu;
