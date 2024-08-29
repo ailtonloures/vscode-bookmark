@@ -2,11 +2,7 @@ import { app, dialog, Menu, nativeImage, Tray } from 'electron/main';
 import { spawn } from 'node:child_process';
 import path from 'node:path';
 
-import {
-	createBookmark,
-	deleteBookmark,
-	listBookmarks,
-} from './repository/main-repository.js';
+import { createBookmark, deleteBookmark, getBookmarks } from './store.js';
 
 let tray = null;
 
@@ -33,7 +29,7 @@ function getAppIcon() {
 }
 
 function createContextMenu() {
-	const bookmarks = listBookmarks().map(({ basename, path }) => ({
+	const bookmarks = getBookmarks().map(({ basename, path, id }) => ({
 		label: basename,
 		submenu: [
 			{
@@ -45,7 +41,7 @@ function createContextMenu() {
 			{
 				label: 'Remove',
 				click: () => {
-					deleteBookmark({ path });
+					deleteBookmark(id);
 					renderTray();
 				},
 			},
