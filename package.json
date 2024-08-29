@@ -1,10 +1,11 @@
 {
 	"name": "vscode-bookmark",
 	"productName": "VSCode Bookmark",
-	"version": "0.1.0",
 	"description": "A utility for vscode developed with electron",
-	"license": "MIT",
+	"version": "0.1.0",
 	"author": "Ailton Loures",
+	"homepage": "https://github.com/ailtonloures/vscode-bookmark",
+	"license": "MIT",
 	"type": "module",
 	"main": "src/main.js",
 	"scripts": {
