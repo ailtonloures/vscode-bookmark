@@ -75,6 +75,7 @@ function createContextMenu() {
 		},
 		{ type: 'separator' },
 		...bookmarks,
+		{ type: 'separator' },
 		{
 			label: 'Quit',
 			click: () => app.quit(),
