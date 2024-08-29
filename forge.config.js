@@ -4,12 +4,15 @@ import { FuseV1Options, FuseVersion } from '@electron/fuses';
 export default {
 	packagerConfig: {
 		asar: true,
+		icon: 'assets/icons/win/icon',
 	},
 	rebuildConfig: {},
 	makers: [
 		{
 			name: '@electron-forge/maker-squirrel',
-			config: {},
+			config: {
+				setupIcon: 'assets/icons/win/icon.ico',
+			},
 		},
 		{
 			name: '@electron-forge/maker-zip',
@@ -17,7 +20,11 @@ export default {
 		},
 		{
 			name: '@electron-forge/maker-deb',
-			config: {},
+			config: {
+				options: {
+					icon: 'assets/icons/png/512x512.png',
+				},
+			},
 		},
 		{
 			name: '@electron-forge/maker-rpm',
