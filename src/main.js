@@ -7,8 +7,9 @@ import { createBookmark, deleteBookmark, getBookmarks } from './store.js';
 let tray = null;
 
 function createTray({ contextMenu }) {
-	const appLabel = getAppLabel();
-	const appIcon = getAppIcon();
+	if (!tray) {
+		const appLabel = getAppLabel();
+		const appIcon = getAppIcon();
 
 	if (!tray) tray = new Tray(appIcon);
 
