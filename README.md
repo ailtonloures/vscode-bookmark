@@ -5,4 +5,4 @@
 <br/>
 VSCode Bookmark
 </h1>
-<p align="center">A utility for vscode developed with electron.</p>
+<p align="center">A utility to save your favorite projects and open them easily in vscode.</p>
