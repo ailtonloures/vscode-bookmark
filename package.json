@@ -2,9 +2,24 @@
 	"name": "vscode-bookmark",
 	"productName": "VSCode Bookmark",
 	"description": "A utility for vscode developed with electron",
-	"version": "0.1.0",
+	"version": "1.0.0-beta",
 	"author": "Ailton Loures",
-	"homepage": "https://github.com/ailtonloures/vscode-bookmark",
+	"homepage": "https://github.com/ailtonloures/vscode-bookmark#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ailtonloures/vscode-bookmark.git",
+		"docs": "https://github.com/ailtonloures/vscode-bookmark/blob/main/README.md"
+	},
+	"keywords": [
+		"electron",
+		"nodejs",
+		"javascript",
+		"esm",
+		"electron-forge",
+		"electron-store",
+		"vscode",
+		"desktop"
+	],
 	"license": "MIT",
 	"type": "module",
 	"main": "src/main.js",
