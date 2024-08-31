@@ -56,7 +56,7 @@ function createContextMenu() {
 
 	const contextMenu = Menu.buildFromTemplate([
 		{
-			label: 'Add a vscode bookmark',
+			label: 'Add project...',
 			type: 'normal',
 			click: async () => {
 				const { canceled, filePaths } = await dialog.showOpenDialog({
