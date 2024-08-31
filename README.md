@@ -1,13 +1,17 @@
 <div align="center">
  <h1>
 <br/>
-  <img src="./assets/icons/icon.png" alt="VSCode Bookmark" width="90">
+  <img src="./assets/icons/icon.png" alt="VSCode Bookmark" width="120">
 <br/>
 <br/>
 VSCode Bookmark
 </h1>
 <p >A utility to save your favorite projects and open them easily in vscode.</p>
 <a href="https://github.com/ailtonloures/vscode-bookmark/releases">Download</a>
+<br />
+<br />
+
+![screenshot](./assets/gifs/apresentation.gif)
 </div>
 
 ## Features
