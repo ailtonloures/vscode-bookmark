@@ -38,7 +38,7 @@ After installing all dependencies, to build the project you need to run the `mak
 # Go into the repository
 $ cd vscode-bookmark
 
-# Install dependencies
+# Run the make command
 $ npm run make
 ```
 
