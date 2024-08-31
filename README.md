@@ -1,7 +1,7 @@
 <div align="center">
-	<h1>
+ <h1>
 <br/>
-  <img src="./assets/icon.png" alt="VSCode Bookmark" width="90">
+  <img src="./assets/icons/icon.png" alt="VSCode Bookmark" width="90">
 <br/>
 <br/>
 VSCode Bookmark

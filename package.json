@@ -25,7 +25,7 @@
 	"main": "src/main.js",
 	"scripts": {
 		"start": "electron-forge start --enable-logging",
-		"make:icons": "electron-icon-maker --input=./assets/icon.png --output=./assets",
+		"make:icons": "electron-icon-maker --input=./assets/icons/icon.png --output=./assets",
 		"lint": "eslint --fix",
 		"package": "electron-forge package",
 		"make": "electron-forge make",
