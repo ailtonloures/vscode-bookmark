@@ -1,0 +1,22 @@
+name: Build and release project
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Publish
+        run: npm ci
+        run: npm run publish
+        env:
+          - GITHUB_TOKEN: {{ secrets.GITHUB_TOKEN }}
