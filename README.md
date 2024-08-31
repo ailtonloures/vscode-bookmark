@@ -11,7 +11,7 @@ VSCode Bookmark
 <br />
 <br />
 
-![screenshot](./assets/gifs/apresentation.gif)
+![screenshot](./assets/gifs/screenshot.gif)
 </div>
 
 ## Features
