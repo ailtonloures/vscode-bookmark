@@ -2,7 +2,7 @@
 	"name": "vscode-bookmark",
 	"productName": "VSCode Bookmark",
 	"description": "A utility for vscode developed with electron",
-	"version": "1.0.0-beta",
+	"version": "0.1.0",
 	"author": "Ailton Loures",
 	"homepage": "https://github.com/ailtonloures/vscode-bookmark#readme",
 	"repository": {

@@ -30,6 +30,18 @@ $ npm install
 $ npm start
 ```
 
+### Build
+
+After installing all dependencies, to build the project you need to run the `make` command. From your command line:
+
+```bash
+# Go into the repository
+$ cd vscode-bookmark
+
+# Install dependencies
+$ npm run make
+```
+
 ## Credits
 
 This software uses the following open source packages:

@@ -4,7 +4,6 @@ import { FuseV1Options, FuseVersion } from '@electron/fuses';
 export default {
 	packagerConfig: {
 		asar: true,
-		icon: 'assets/icons/win/icon',
 	},
 	rebuildConfig: {},
 	makers: [
