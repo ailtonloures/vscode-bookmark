@@ -1,35 +1,17 @@
 import { FusesPlugin } from '@electron-forge/plugin-fuses';
 import { FuseV1Options, FuseVersion } from '@electron/fuses';
 
+const commonLinuxConfig = {
+	categories: ['Development', 'Utility'],
+	icon: {
+		'1024x1024': 'assets/icons/png/1024x1024.png',
+	},
+};
+
 export default {
 	packagerConfig: {
 		asar: true,
 	},
-	rebuildConfig: {},
-	makers: [
-		{
-			name: '@electron-forge/maker-squirrel',
-			config: {
-				setupIcon: 'assets/icons/win/icon.ico',
-			},
-		},
-		{
-			name: '@electron-forge/maker-zip',
-			platforms: ['darwin'],
-		},
-		{
-			name: '@electron-forge/maker-deb',
-			config: {
-				options: {
-					icon: 'assets/icons/png/512x512.png',
-				},
-			},
-		},
-		{
-			name: '@electron-forge/maker-rpm',
-			config: {},
-		},
-	],
 	plugins: [
 		{
 			name: '@electron-forge/plugin-auto-unpack-natives',
@@ -46,5 +28,43 @@ export default {
 			[FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
 			[FuseV1Options.OnlyLoadAppFromAsar]: true,
 		}),
+	],
+	makers: [
+		{
+			name: '@electron-forge/maker-squirrel',
+			platforms: ['win32'],
+			config: {
+				setupIcon: 'assets/icons/win/icon.ico',
+			},
+		},
+		{
+			name: '@electron-forge/maker-zip',
+			platforms: ['darwin'],
+			config: {},
+		},
+		{
+			name: '@electron-forge/maker-deb',
+			platforms: ['linux'],
+			config: commonLinuxConfig,
+		},
+		{
+			name: '@electron-forge/maker-rpm',
+			platforms: ['linux'],
+			config: commonLinuxConfig,
+		},
+	],
+	publishers: [
+		{
+			name: '@electron-forge/publisher-github',
+			config: {
+				repository: {
+					owner: 'ailtonloures',
+					name: 'vscode-bookmark',
+				},
+				draft: true,
+				prerelease: false,
+				generateReleaseNotes: true,
+			},
+		},
 	],
 };
