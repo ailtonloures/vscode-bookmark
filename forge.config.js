@@ -11,7 +11,6 @@ const commonLinuxConfig = {
 export default {
 	packagerConfig: {
 		asar: true,
-		icon: 'assets/icons',
 	},
 	plugins: [
 		{
