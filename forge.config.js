@@ -53,12 +53,12 @@ export default {
 		{
 			name: '@electron-forge/maker-deb',
 			platforms: ['linux'],
-			config: commonLinuxConfig,
+			...commonLinuxConfig,
 		},
 		{
 			name: '@electron-forge/maker-rpm',
 			platforms: ['linux'],
-			config: commonLinuxConfig,
+			...commonLinuxConfig,
 		},
 	],
 	publishers: [
