@@ -1,0 +1,29 @@
+name: Release ${{ github.ref }}
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4       
+    - name: Use node v20
+      uses: actions/setup-node@master
+      with:
+        node-version: 20
+    - name: Install dependencies
+      run: npm ci
+    - name: Publish on Github
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: npm run publish
+    
