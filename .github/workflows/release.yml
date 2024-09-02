@@ -17,12 +17,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
     - name: Use node v20
-      uses: actions/setup-node@master
+      uses: actions/setup-node@v4
       with:
         node-version: 20
     - name: Install dependencies
       run: npm ci
-    - name: Publish on release ${{ github.ref }}
+    - name: Publish on release ${{ github.ref_name }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: npm run publish

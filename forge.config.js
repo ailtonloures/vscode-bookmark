@@ -2,17 +2,24 @@ import { FusesPlugin } from '@electron-forge/plugin-fuses';
 import { FuseV1Options, FuseVersion } from '@electron/fuses';
 
 const commonLinuxConfig = {
-	maintainer: 'Ailton Loures',
-	categories: ['Development', 'Utility'],
-	icon: {
-		'1024x1024': 'assets/icons/png/1024x1024.png',
+	executableName: 'vscode-bookmark',
+	config: {
+		options: {
+			maintainer: 'Ailton Loures',
+			categories: ['Development', 'Utility'],
+			icon: {
+				'1024x1024': 'assets/icons/png/1024x1024.png',
+			},
+		},
 	},
 };
 
 export default {
+	buildIdentifier: 'vscode-bookmark',
 	packagerConfig: {
 		asar: true,
 		icon: 'assets/icons/icon',
+		executableName: 'my-electron-app',
 	},
 	plugins: [
 		{
