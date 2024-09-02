@@ -2,14 +2,13 @@ import { FusesPlugin } from '@electron-forge/plugin-fuses';
 import { FuseV1Options, FuseVersion } from '@electron/fuses';
 
 const commonLinuxConfig = {
-	executableName: 'vscode-bookmark',
 	config: {
 		options: {
+			icon: 'assets/icons/png/1024x1024.png',
 			maintainer: 'Ailton Loures',
 			categories: ['Development', 'Utility'],
-			icon: {
-				'1024x1024': 'assets/icons/png/1024x1024.png',
-			},
+			productName: 'VSCodeBookmark',
+			genericName: 'VSCode Bookmark',
 		},
 	},
 };
@@ -19,7 +18,7 @@ export default {
 	packagerConfig: {
 		asar: true,
 		icon: 'assets/icons/icon',
-		executableName: 'my-electron-app',
+		executableName: 'vscode-bookmark',
 	},
 	plugins: [
 		{
