@@ -2,6 +2,7 @@ import { FusesPlugin } from '@electron-forge/plugin-fuses';
 import { FuseV1Options, FuseVersion } from '@electron/fuses';
 
 const commonLinuxConfig = {
+	maintainer: 'Ailton Loures',
 	categories: ['Development', 'Utility'],
 	icon: {
 		'1024x1024': 'assets/icons/png/1024x1024.png',
@@ -11,6 +12,7 @@ const commonLinuxConfig = {
 export default {
 	packagerConfig: {
 		asar: true,
+		icon: 'assets/icons/icon',
 	},
 	plugins: [
 		{
@@ -40,7 +42,6 @@ export default {
 		{
 			name: '@electron-forge/maker-zip',
 			platforms: ['darwin'],
-			config: {},
 		},
 		{
 			name: '@electron-forge/maker-deb',
@@ -61,8 +62,7 @@ export default {
 					owner: 'ailtonloures',
 					name: 'vscode-bookmark',
 				},
-				draft: false,
-				prerelease: false,
+				draft: true,
 			},
 		},
 	],
