@@ -1,4 +1,4 @@
-name: Release ${{ github.ref }}
+name: Release
 
 on:
   push:
@@ -15,15 +15,15 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4       
+      uses: actions/checkout@v4
     - name: Use node v20
       uses: actions/setup-node@master
       with:
         node-version: 20
     - name: Install dependencies
       run: npm ci
-    - name: Publish on Github
+    - name: Publish on release ${{ github.ref }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: npm run publish
-    
+
