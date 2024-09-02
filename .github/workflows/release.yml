@@ -9,9 +9,6 @@ jobs:
   publish:
     runs-on: ${{ matrix.os }}
 
-    permissions:
-      packages: write
-
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
