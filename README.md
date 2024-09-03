@@ -16,8 +16,9 @@ VSCode Bookmark
 
 ## Features
 
-- Save projects path to the Store
+- Save projects path on Store
 - Open projects in VSCode
+- Logs and Monitoring with Sentry
 
 ## How to use
 
@@ -59,6 +60,7 @@ This software uses the following open source packages:
 - [Node.js](https://nodejs.org/)
 - [ESlint](https://eslint.org/)
 - [Prettier](https://prettier.io/)
+- [Sentry](https://sentry.io/)
 
 ## License
 

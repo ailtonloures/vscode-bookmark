@@ -2,7 +2,7 @@
 	"name": "vscode-bookmark",
 	"productName": "VSCode Bookmark",
 	"description": "A utility to save your favorite projects and open them easily in vscode.",
-	"version": "1.0.0-beta",
+	"version": "1.1.0-beta",
 	"author": "Ailton Loures",
 	"homepage": "https://github.com/ailtonloures/vscode-bookmark#readme",
 	"repository": {
@@ -18,7 +18,8 @@
 		"electron-forge",
 		"electron-store",
 		"vscode",
-		"desktop"
+		"desktop",
+		"sentry"
 	],
 	"license": "MIT",
 	"type": "module",
@@ -32,6 +33,7 @@
 		"publish": "electron-forge publish"
 	},
 	"dependencies": {
+		"@sentry/electron": "^5.4.0",
 		"electron-squirrel-startup": "^1.0.1",
 		"electron-store": "^10.0.0"
 	},
