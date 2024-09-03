@@ -18,7 +18,8 @@
 		"electron-forge",
 		"electron-store",
 		"vscode",
-		"desktop"
+		"desktop",
+		"sentry"
 	],
 	"license": "MIT",
 	"type": "module",
