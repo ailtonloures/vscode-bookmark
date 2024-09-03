@@ -4,7 +4,7 @@ import { FuseV1Options, FuseVersion } from '@electron/fuses';
 const commonLinuxConfig = {
 	config: {
 		options: {
-			icon: 'assets/icons/png/1024x1024.png',
+			icon: 'assets/icons/icon.png',
 			maintainer: 'Ailton Loures',
 			categories: ['Development', 'Utility'],
 			productName: 'VSCodeBookmark',
@@ -42,7 +42,7 @@ export default {
 			name: '@electron-forge/maker-squirrel',
 			platforms: ['win32'],
 			config: {
-				setupIcon: 'assets/icons/win/icon.ico',
+				setupIcon: 'assets/icons/icon.ico',
 			},
 		},
 		{
