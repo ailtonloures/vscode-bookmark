@@ -6,21 +6,44 @@
 <br/>
 VSCode Bookmark
 </h1>
+
 <p >A utility to save your favorite projects and open them easily in vscode.</p>
-<a href="https://github.com/ailtonloures/vscode-bookmark/releases">Download</a>
-<br />
-<br />
+
+![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads/ailtonloures/vscode-bookmark/latest/total)
+![GitHub Release](https://img.shields.io/github/v/release/ailtonloures/vscode-bookmark)
+![GitHub Repo stars](https://img.shields.io/github/stars/ailtonloures/vscode-bookmark)
 
 ![screenshot](./assets/gifs/screenshot.gif)
 </div>
 
+## Support for
+
+![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
+![Fedora](https://img.shields.io/badge/Fedora-294172?style=for-the-badge&logo=fedora&logoColor=white)
+![Debian](https://img.shields.io/badge/Debian-D70A53?style=for-the-badge&logo=debian&logoColor=white)
+![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
+![macOS](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=macos&logoColor=F0F0F0)
+
+### Releases
+
+[Go to latest](https://github.com/ailtonloures/vscode-bookmark/releases/latest)
+
+[View other releases...](https://github.com/ailtonloures/vscode-bookmark/releases)
+
 ## Features
 
-- Save projects path on Store
-- Open projects in VSCode
-- Logs and Monitoring with Sentry
+- Save projects path on Store;
+- Open projects in VSCode;
+- Logs and Monitoring with Sentry;
 
-## How to use
+## Development
+
+### Requirements
+
+- [Git](https://git-scm.com/)
+- [NodeJs v20.*](https://nodejs.org/pt)
+
+### How to use
 
 To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer.
 
@@ -50,7 +73,7 @@ $ cd vscode-bookmark
 $ npm run make
 ```
 
-## Credits
+### Credits
 
 This software uses the following open source packages:
 
@@ -64,4 +87,4 @@ This software uses the following open source packages:
 
 ## License
 
-[MIT](LICENSE)
+[![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](./LICENSE)
