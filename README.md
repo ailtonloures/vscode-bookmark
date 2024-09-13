@@ -6,7 +6,12 @@
 <br/>
 VSCode Bookmark
 </h1>
+
 <p >A utility to save your favorite projects and open them easily in vscode.</p>
+
+![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads/ailtonloures/vscode-bookmark/latest/total)
+![GitHub Release](https://img.shields.io/github/v/release/ailtonloures/vscode-bookmark)
+![GitHub Repo stars](https://img.shields.io/github/stars/ailtonloures/vscode-bookmark)
 
 ![screenshot](./assets/gifs/screenshot.gif)
 </div>
@@ -14,15 +19,14 @@ VSCode Bookmark
 ## Support for
 
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
-![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+![Fedora](https://img.shields.io/badge/Fedora-294172?style=for-the-badge&logo=fedora&logoColor=white)
+![Debian](https://img.shields.io/badge/Debian-D70A53?style=for-the-badge&logo=debian&logoColor=white)
+![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
 ![macOS](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=macos&logoColor=F0F0F0)
 
-### Download latest release
+### Releases
 
-- [Download for Windows](https://github.com/ailtonloures/vscode-bookmark/releases/download/v1.1.0-beta/VSCode.Bookmark-1.1.0-beta.Setup.exe)
-- [Download for Debian/Ubuntu](https://github.com/ailtonloures/vscode-bookmark/releases/download/v1.1.0-beta/vscode-bookmark_1.1.0.beta_amd64.deb)
-- [Download for Fedora](https://github.com/ailtonloures/vscode-bookmark/releases/download/v1.1.0-beta/vscode-bookmark-1.1.0.beta-1.x86_64.rpm)
-- [Download for MacOS](https://github.com/ailtonloures/vscode-bookmark/releases/download/v1.1.0-beta/VSCode.Bookmark-darwin-arm64-1.1.0-beta.zip)
+[Go to latest](https://github.com/ailtonloures/vscode-bookmark/releases/latest)
 
 [View other releases...](https://github.com/ailtonloures/vscode-bookmark/releases)
 
