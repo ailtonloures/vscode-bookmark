@@ -32,9 +32,9 @@ VSCode Bookmark
 
 ## Features
 
-- Save projects path on Store
-- Open projects in VSCode
-- Logs and Monitoring with Sentry
+- Save projects path on Store;
+- Open projects in VSCode;
+- Logs and Monitoring with Sentry;
 
 ## Development
 
