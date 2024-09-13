@@ -25,7 +25,6 @@
 	"type": "module",
 	"main": "src/main.js",
 	"scripts": {
-		"test": "vitest",
 		"start": "electron-forge start --enable-logging",
 		"make:icons": "electron-icon-maker --input=./assets/icons/icon.png --output=./assets",
 		"lint": "eslint --fix",
@@ -54,7 +53,6 @@
 		"eslint": "^9.9.1",
 		"eslint-config-prettier": "^9.1.0",
 		"globals": "^15.9.0",
-		"prettier": "^3.3.3",
-		"vitest": "^2.1.0"
+		"prettier": "^3.3.3"
 	}
 }
