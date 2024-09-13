@@ -7,12 +7,24 @@
 VSCode Bookmark
 </h1>
 <p >A utility to save your favorite projects and open them easily in vscode.</p>
-<a href="https://github.com/ailtonloures/vscode-bookmark/releases">Download</a>
-<br />
-<br />
 
 ![screenshot](./assets/gifs/screenshot.gif)
 </div>
+
+## Support for
+
+![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
+![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+![macOS](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=macos&logoColor=F0F0F0)
+
+### Download latest release
+
+- [Download for Windows](https://github.com/ailtonloures/vscode-bookmark/releases/download/v1.1.0-beta/VSCode.Bookmark-1.1.0-beta.Setup.exe)
+- [Download for Debian/Ubuntu](https://github.com/ailtonloures/vscode-bookmark/releases/download/v1.1.0-beta/vscode-bookmark_1.1.0.beta_amd64.deb)
+- [Download for Fedora](https://github.com/ailtonloures/vscode-bookmark/releases/download/v1.1.0-beta/vscode-bookmark-1.1.0.beta-1.x86_64.rpm)
+- [Download for MacOS](https://github.com/ailtonloures/vscode-bookmark/releases/download/v1.1.0-beta/VSCode.Bookmark-darwin-arm64-1.1.0-beta.zip)
+
+[View other releases...](https://github.com/ailtonloures/vscode-bookmark/releases)
 
 ## Features
 
@@ -20,7 +32,14 @@ VSCode Bookmark
 - Open projects in VSCode
 - Logs and Monitoring with Sentry
 
-## How to use
+## Development
+
+### Requirements
+
+- [Git](https://git-scm.com/)
+- [NodeJs v20.*](https://nodejs.org/pt)
+
+### How to use
 
 To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
 
@@ -50,7 +69,7 @@ $ cd vscode-bookmark
 $ npm run make
 ```
 
-## Credits
+### Credits
 
 This software uses the following open source packages:
 
@@ -64,4 +83,4 @@ This software uses the following open source packages:
 
 ## License
 
-[MIT](LICENSE)
+[![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](./LICENSE)
