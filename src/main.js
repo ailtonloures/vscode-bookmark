@@ -1,3 +1,5 @@
+if (require('electron-squirrel-startup')) app.quit();
+
 import * as Sentry from '@sentry/electron';
 
 import { app } from 'electron/main';
