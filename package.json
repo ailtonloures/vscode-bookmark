@@ -48,7 +48,7 @@
 		"@electron-forge/publisher-github": "^7.4.0",
 		"@electron/fuses": "^1.8.0",
 		"@eslint/js": "^9.9.1",
-		"electron": "32.0.1",
+		"electron": "32.1.0",
 		"electron-icon-maker": "^0.0.5",
 		"eslint": "^9.9.1",
 		"eslint-config-prettier": "^9.1.0",
