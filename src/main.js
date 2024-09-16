@@ -10,8 +10,11 @@ Sentry.init({
 
 if (squirrelStartup || !app.requestSingleInstanceLock()) app.quit();
 
-app.setLoginItemSettings({
-	openAtLogin: true,
-});
+const { openAtLogin } = app.getLoginItemSettings();
+
+if (openAtLogin === false)
+	app.setLoginItemSettings({
+		openAtLogin: true,
+	});
 
 app.whenReady().then(() => renderTray());
