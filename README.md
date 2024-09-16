@@ -41,7 +41,7 @@ VSCode Bookmark
 ### Requirements
 
 - [Git](https://git-scm.com/)
-- [NodeJs v20.*](https://nodejs.org/pt)
+- [Node LTS](https://nodejs.org/pt)
 
 ### How to use
 
