@@ -12,6 +12,7 @@ VSCode Bookmark
 ![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads/ailtonloures/vscode-bookmark/latest/total)
 ![GitHub Release](https://img.shields.io/github/v/release/ailtonloures/vscode-bookmark)
 ![GitHub Repo stars](https://img.shields.io/github/stars/ailtonloures/vscode-bookmark)
+![GitHub License](https://img.shields.io/github/license/ailtonloures/vscode-bookmark)
 
 ![screenshot](./assets/gifs/screenshot.gif)
 </div>
@@ -85,6 +86,8 @@ This software uses the following open source packages:
 - [Prettier](https://prettier.io/)
 - [Sentry](https://sentry.io/)
 
-## License
+## Contributing
 
-[![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](./LICENSE)
+Contributions are always welcome, consider opening an issue first and discuss with the community before opening a pull request.
+
+Check out the [CONTRIBUTING.md](./CONTRIBUTING.md).
