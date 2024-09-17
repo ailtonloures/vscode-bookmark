@@ -7,7 +7,7 @@
 VSCode Bookmark
 </h1>
 
-<p >A utility to save your favorite projects and open them easily in vscode.</p>
+<p>A utility to save your favorite projects and open them easily in vscode.</p>
 
 ![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads/ailtonloures/vscode-bookmark/latest/total)
 ![GitHub Release](https://img.shields.io/github/v/release/ailtonloures/vscode-bookmark)
