@@ -2,7 +2,11 @@ import { app, dialog, Menu, nativeImage, Tray } from 'electron/main';
 import { spawn } from 'node:child_process';
 import path from 'node:path';
 
-import { createBookmark, deleteBookmark, getBookmarks } from './shared/store.js';
+import {
+	createBookmark,
+	deleteBookmark,
+	getBookmarks,
+} from './shared/store.js';
 
 let tray = null;
 
@@ -28,7 +32,7 @@ function getLabel() {
 
 function getIcon() {
 	return nativeImage.createFromPath(
-		path.resolve(import.meta.dirname, '..', 'assets/icons/png/16x16.png'),
+		path.resolve(import.meta.dirname, '..', 'assets/icons/png/16x16.png')
 	);
 }
 

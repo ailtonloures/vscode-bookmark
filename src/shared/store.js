@@ -13,7 +13,7 @@ export function createBookmark({ path, basename }) {
 				id: new Date().getTime(),
 			},
 			...getBookmarks(),
-		]),
+		])
 	);
 }
 
@@ -27,6 +27,6 @@ export function getBookmarks() {
 export function deleteBookmark(id) {
 	store.set(
 		storeName,
-		JSON.stringify(getBookmarks().filter((item) => item.id !== id)),
+		JSON.stringify(getBookmarks().filter((item) => item.id !== id))
 	);
 }
