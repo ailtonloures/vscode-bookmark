@@ -1,2 +1,14 @@
+# Dependency directories
 node_modules
-out
+
+# Electron-Forge
+out/
+
+# Github workflows
+.github
+
+# VSCode settings
+.vscode
+
+# Markdown files
+*.md
