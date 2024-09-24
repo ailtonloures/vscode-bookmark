@@ -5,8 +5,8 @@ import { basename } from 'node:path';
 import { App } from '../config/app.js';
 import { BookmarkRepository } from '../repository/bookmark.js';
 
-const AddProjectMenu = {
-	label: 'Add project...',
+const SearchProjectMenu = {
+	label: 'Search project...',
 	type: 'normal',
 	click: async () => {
 		const { canceled, filePaths } = await dialog.showOpenDialog({
@@ -82,7 +82,7 @@ const TrayApp = {
 	 */
 	createContextMenu() {
 		const contextMenu = Menu.buildFromTemplate([
-			AddProjectMenu,
+			SearchProjectMenu,
 			{ type: 'separator' },
 			...BookmarksMenu,
 			{ type: 'separator' },
