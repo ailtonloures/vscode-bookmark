@@ -4,7 +4,7 @@ import { basename, resolve } from 'node:path';
 
 /**
  * Define Tray application component
- * @param {import('../..').Context} context
+ * @param {import('..').Context} context
  */
 export const Tray = ({ app, store: { bookmarkStore } }) => {
 	/**
@@ -27,7 +27,7 @@ export const Tray = ({ app, store: { bookmarkStore } }) => {
 	 * @private
 	 */
 	const icon = nativeImage.createFromPath(
-		resolve(import.meta.dirname, '..', '..', 'assets/icons/png/16x16.png')
+		resolve('src', 'resources', 'icons', 'tray-icon.png')
 	);
 
 	/**

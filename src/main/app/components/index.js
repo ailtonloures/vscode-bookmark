@@ -1,2 +1,2 @@
-export * from './tray/index.js';
-export * from './window/index.js';
+export * from './tray.js';
+export * from './window.js';

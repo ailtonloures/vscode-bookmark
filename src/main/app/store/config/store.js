@@ -2,7 +2,6 @@ import ElectronStore from 'electron-store';
 
 /**
  * Store configuration
- * @class
  */
 export const Store = {
 	/**

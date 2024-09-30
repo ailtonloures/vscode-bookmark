@@ -1,8 +1,5 @@
-import { app } from 'electron/main';
-
-import { BookmarkStore } from '../store/bookmark';
-import { Tray } from './components';
-import { requestNewInstance, setStartupOnLogin } from './core';
+import { Tray } from './components/index.js';
+import { BookmarkStore } from './store/index.js';
 
 /**
  * @typedef Store
@@ -17,20 +14,22 @@ import { requestNewInstance, setStartupOnLogin } from './core';
 
 /**
  * The main application
+ * @param {Electron.App} app
  */
-export const App = {
-	start() {
-		if (requestNewInstance()) app.quit();
-
+export const App = (app) => {
+	function start() {
 		const context = {
 			app,
 			store: { bookmarkStore: BookmarkStore },
 		};
 
-		setStartupOnLogin();
 		app
 			.whenReady()
-			.then(() => console.log('Application is ready'))
-			.then(Tray(context).render());
-	},
+			.then(() => console.log('Application is ready\n'))
+			.then(() => Tray(context).render());
+	}
+
+	return {
+		start,
+	};
 };

@@ -22,27 +22,6 @@ export default {
 	},
 	plugins: [
 		{
-			name: '@electron-forge/plugin-vite',
-			config: {
-				build: [
-					{
-						entry: 'src/main/index.js',
-						config: 'vite.main.config.mjs',
-					},
-					{
-						entry: 'src/main/preload.js',
-						config: 'vite.preload.config.mjs',
-					},
-				],
-				renderer: [
-					{
-						name: 'main_window',
-						config: 'vite.renderer.config.mjs',
-					},
-				],
-			},
-		},
-		{
 			name: '@electron-forge/plugin-auto-unpack-natives',
 			config: {},
 		},

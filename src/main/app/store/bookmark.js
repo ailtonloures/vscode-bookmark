@@ -1,4 +1,4 @@
-import { Store } from './config';
+import { Store } from './config/index.js';
 
 const store = Store.getInstance();
 const storeName = 'bookmarks';
