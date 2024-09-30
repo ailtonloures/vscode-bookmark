@@ -23,11 +23,9 @@
 	],
 	"license": "MIT",
 	"type": "module",
-	"main": "src/main.js",
+	"main": ".vite/build/main.js",
 	"scripts": {
 		"start": "electron-forge start --enable-logging",
-		"make:icons": "electron-icon-maker --input=./assets/icons/icon.png --output=./assets",
-		"lint": "prettier --write . && eslint --fix",
 		"package": "electron-forge package",
 		"make": "electron-forge make",
 		"publish": "electron-forge publish",
@@ -46,6 +44,7 @@
 		"@electron-forge/maker-zip": "^7.4.0",
 		"@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
 		"@electron-forge/plugin-fuses": "^7.4.0",
+		"@electron-forge/plugin-vite": "^7.5.0",
 		"@electron-forge/publisher-github": "^7.4.0",
 		"@electron/fuses": "^1.8.0",
 		"@eslint/js": "^9.9.1",
@@ -55,6 +54,7 @@
 		"eslint-config-prettier": "^9.1.0",
 		"globals": "^15.9.0",
 		"husky": "^9.1.6",
+		"lint-staged": "^15.2.10",
 		"prettier": "^3.3.3"
 	}
 }

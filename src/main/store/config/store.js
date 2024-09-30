@@ -2,11 +2,12 @@ import ElectronStore from 'electron-store';
 
 /**
  * Store configuration
+ * @class
  */
-const Store = {
+export const Store = {
 	/**
+	 * @type {ElectronStore|null}
 	 * @private
-	 * @type {ElectronStore}
 	 */
 	instance: null,
 
@@ -14,13 +15,11 @@ const Store = {
 	 * Returns a ElectronStore instance.
 	 * @return {ElectronStore}
 	 */
-	getInstance: () => {
-		if (!Store.instance) {
-			Store.instance = new ElectronStore();
+	getInstance() {
+		if (!this.instance) {
+			this.instance = new ElectronStore();
 		}
 
-		return Store.instance;
+		return this.instance;
 	},
 };
-
-export { Store };

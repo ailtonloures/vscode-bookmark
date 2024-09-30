@@ -1,22 +1,23 @@
-import { Store } from '../config/store.js';
+import { Store } from './config';
 
 const store = Store.getInstance();
 const storeName = 'bookmarks';
 
 /**
- * Bookmark Repository
+ * Define BookmarkData
+ * @typedef BookmarkData
+ * @property {string} path - File path
+ * @property {string} basename - File basename
+ * @property {number|undefined} id - Timestamp id
  */
-const BookmarkRepository = {
-	/**
-	 * @typedef Bookmark
-	 * @property {string} path - File path
-	 * @property {string} basename - File basename
-	 * @property {number|undefined} id - Timestamp id
-	 */
 
+/**
+ * Define Bookmark store access method
+ */
+export const BookmarkStore = {
 	/**
 	 * Create a new bookmark
-	 * @param {Bookmark}
+	 * @param {BookmarkData}
 	 */
 	create({ path, basename }) {
 		store.set(
@@ -34,7 +35,7 @@ const BookmarkRepository = {
 
 	/**
 	 * Get all bookmarks
-	 * @returns {Bookmark[]}
+	 * @returns {BookmarkData[]}
 	 */
 	get() {
 		const storedBookmarks = store.get(storeName);
@@ -54,5 +55,3 @@ const BookmarkRepository = {
 		);
 	},
 };
-
-export { BookmarkRepository };

@@ -4,9 +4,9 @@ import globals from 'globals';
 
 export default [
 	{
-		files: ['src/**/*.js'],
+		files: ['**/*.{js,mjs,cjs,ts}'],
 	},
-	{ languageOptions: { globals: globals.node } },
+	{ languageOptions: { globals: { ...globals.browser, ...globals.node } } },
 	pluginJs.configs.recommended,
 	{
 		ignores: ['node_modules'],
