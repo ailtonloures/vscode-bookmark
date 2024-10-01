@@ -41,8 +41,7 @@ export const Tray = ({ app, store: { bookmarkStore } }) => {
 			tray.on('click', () => tray.popUpContextMenu());
 		}
 
-		const contextMenu = createContextMenu(Tray);
-		tray.setContextMenu(contextMenu);
+		tray.setContextMenu(createContextMenu());
 	}
 
 	/**

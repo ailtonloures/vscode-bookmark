@@ -27,8 +27,16 @@ export const Setup = (app) => {
 		return squirrelStartup || !primaryInstance;
 	}
 
+	/**
+	 * Create a new application instance
+	 * @param {Function} fn
+	 */
+	function makeApp(fn) {
+		setStartupOnLogin();
+		requestNewInstance() ? app.quit() : fn();
+	}
+
 	return {
-		requestNewInstance,
-		setStartupOnLogin,
+		makeApp,
 	};
 };
