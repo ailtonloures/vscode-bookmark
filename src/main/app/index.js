@@ -25,6 +25,9 @@ export const App = (app) => {
 		return { bookmarkStore: BookmarkStore };
 	}
 
+	/**
+	 * Start the application components
+	 */
 	function start() {
 		const context = {
 			app,
