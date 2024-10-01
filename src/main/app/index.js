@@ -1,5 +1,14 @@
+import { nativeImage } from 'electron/main';
+import { resolve } from 'node:path';
+
 import { Tray } from './components/index.js';
 import { BookmarkStore } from './store/index.js';
+
+/**
+ * @typedef Info
+ * @property {string} title
+ * @property {Electron.NativeImage} icon
+ */
 
 /**
  * @typedef Store
@@ -9,6 +18,7 @@ import { BookmarkStore } from './store/index.js';
 /**
  * @typedef Context
  * @property {Electron.App} app
+ * @property {Info} info
  * @property {Store} store
  */
 
@@ -17,10 +27,32 @@ import { BookmarkStore } from './store/index.js';
  * @param {Electron.App} app
  */
 export const App = (app) => {
+	/**
+	 * Get application info.
+	 * @return {Info}
+	 */
+	function getInfo() {
+		return {
+			title: `${app.getName()} - ${app.getVersion()}`,
+			icon: nativeImage.createFromPath(
+				resolve('src', 'resources', 'icons', 'main-icon.png')
+			),
+		};
+	}
+
+	/**
+	 * Get store configuration.
+	 * @return {Store}
+	 */
+	function getStore() {
+		return { bookmarkStore: BookmarkStore };
+	}
+
 	function start() {
 		const context = {
 			app,
-			store: { bookmarkStore: BookmarkStore },
+			info: getInfo(),
+			store: getStore(),
 		};
 
 		app
