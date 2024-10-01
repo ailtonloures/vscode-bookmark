@@ -1,22 +1,34 @@
-import { dialog, Tray as ElectronTray, Menu } from 'electron/main';
+import { dialog, Tray as ElectronTray, Menu, nativeImage } from 'electron/main';
 import { spawn } from 'node:child_process';
-import { basename } from 'node:path';
+import { basename, resolve } from 'node:path';
 
 /**
  * Define Tray application component
  * @param {import('..').Context} context
  */
-export const Tray = ({
-	app,
-	info: { title, icon },
-	store: { bookmarkStore },
-}) => {
+export const Tray = ({ app, store: { bookmarkStore } }) => {
 	/**
 	 * Electron Tray instance
-	 * @type {Electron.Tray|undefined} tray
+	 * @type {Electron.Tray|undefined}
 	 * @private
 	 */
 	let tray = null;
+
+	/**
+	 * Get tray title
+	 * @type {string}
+	 * @private
+	 */
+	const title = `${app.getName()} - v${app.getVersion()}`;
+
+	/**
+	 * Get tray icon
+	 * @type {Electron.NativeImage}
+	 * @private
+	 */
+	const icon = nativeImage.createFromPath(
+		resolve('src', 'resources', 'icons', 'tray-icon.png')
+	);
 
 	/**
 	 * Create a new tray instance
@@ -34,6 +46,7 @@ export const Tray = ({
 
 	/**
 	 * Create a new context menu for the tray
+	 * @private
 	 */
 	function createContextMenu() {
 		return Menu.buildFromTemplate([
