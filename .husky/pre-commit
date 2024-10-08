@@ -1,1 +1,1 @@
-npx lint-staged -d && git add --all .
+npx lint-staged && git add --all .
