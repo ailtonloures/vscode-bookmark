@@ -17,8 +17,10 @@ function setAppToOpenAtLogin() {
 }
 
 function makeSetup(fn) {
+	if (hasSecondInstance()) app.quit();
+
 	setAppToOpenAtLogin();
-	hasSecondInstance() ? app.quit() : fn();
+	fn();
 }
 
 export { makeSetup };
