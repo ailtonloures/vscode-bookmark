@@ -2,7 +2,7 @@
 	"name": "vscode-bookmark",
 	"productName": "VSCode Bookmark",
 	"description": "A utility to save your favorite projects and open them easily in vscode.",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"author": "Ailton Loures",
 	"homepage": "https://github.com/ailtonloures/vscode-bookmark#readme",
 	"repository": {
