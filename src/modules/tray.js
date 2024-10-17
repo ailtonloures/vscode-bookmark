@@ -9,7 +9,15 @@ function getLabel() {
 
 function getIcon() {
 	return nativeImage.createFromPath(
-		path.resolve('assets', 'icons', 'png', 'tray-icon.png')
+		path.resolve(
+			import.meta.dirname,
+			'..',
+			'..',
+			'assets',
+			'icons',
+			'png',
+			'tray-icon.png'
+		)
 	);
 }
 
