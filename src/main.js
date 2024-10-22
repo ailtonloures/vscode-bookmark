@@ -11,10 +11,7 @@ import {
 	getBookmarks,
 } from './data/store/bookmark.js';
 import { createMenu, createTray } from './modules/index.js';
-import {
-	makeAppToInitOnASingleInstance,
-	setAppToOpenAtLogin,
-} from './setup.js';
+import { makeAppToInitOnASingleInstance } from './setup.js';
 
 Sentry.init({
 	dsn: 'https://713782327975276ae010040b1db6ab8a@o4507887084503040.ingest.us.sentry.io/4507887098724352',
@@ -23,26 +20,27 @@ Sentry.init({
 let tray = null;
 
 function getTrayMenu() {
-	const bookmarks = getBookmarks()
-		.slice(0, 10)
-		.map(({ basename, path, id }) => ({
-			label: basename,
-			submenu: [
-				{
-					label: 'Open',
-					click: () => {
-						spawn('code', [path], { shell: true });
+	const bookmarksMenu = () =>
+		getBookmarks()
+			.slice(0, 10)
+			.map(({ basename, path, id }) => ({
+				label: basename,
+				submenu: [
+					{
+						label: 'Open',
+						click: () => {
+							spawn('code', [path], { shell: true });
+						},
 					},
-				},
-				{
-					label: 'Remove',
-					click: () => {
-						deleteBookmark(id);
-						renderApp();
+					{
+						label: 'Remove',
+						click: () => {
+							deleteBookmark(id);
+							renderApp();
+						},
 					},
-				},
-			],
-		}));
+				],
+			}));
 
 	return createMenu([
 		{
@@ -65,7 +63,7 @@ function getTrayMenu() {
 			},
 		},
 		{ type: 'separator' },
-		...bookmarks,
+		...bookmarksMenu(),
 		{ type: 'separator' },
 		{
 			label: 'Quit',
@@ -80,7 +78,9 @@ function renderApp() {
 }
 
 makeAppToInitOnASingleInstance(async () => {
-	setAppToOpenAtLogin();
+	app.setLoginItemSettings({
+		openAtLogin: true,
+	});
 
 	await app.whenReady();
 

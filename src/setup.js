@@ -17,13 +17,4 @@ function makeAppToInitOnASingleInstance(fn) {
 	fn();
 }
 
-function setAppToOpenAtLogin() {
-	const { openAtLogin } = app.getLoginItemSettings();
-
-	if (openAtLogin === false)
-		app.setLoginItemSettings({
-			openAtLogin: true,
-		});
-}
-
-export { makeAppToInitOnASingleInstance, setAppToOpenAtLogin };
+export { makeAppToInitOnASingleInstance };
