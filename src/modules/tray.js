@@ -1,8 +1,6 @@
 import { app, nativeImage, Tray } from 'electron/main';
 import path from 'node:path';
 
-let tray = null;
-
 function getLabel() {
 	return `${app.getName()} - v${app.getVersion()}`;
 }
@@ -21,7 +19,7 @@ function getIcon() {
 	);
 }
 
-function createTray() {
+function createTray(tray = null) {
 	if (!tray) {
 		const label = getLabel();
 		const icon = getIcon();
