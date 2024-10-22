@@ -19,7 +19,7 @@ Sentry.init({
 
 let tray = null;
 
-function getTrayMenu() {
+function createTrayMenu() {
 	const bookmarksMenu = () =>
 		getBookmarks()
 			.slice(0, 10)
@@ -74,7 +74,7 @@ function getTrayMenu() {
 
 function renderApp() {
 	tray = createTray(tray);
-	tray.setContextMenu(getTrayMenu());
+	tray.setContextMenu(createTrayMenu());
 }
 
 makeAppToInitOnASingleInstance(async () => {
