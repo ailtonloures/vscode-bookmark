@@ -19,16 +19,14 @@ function getIcon() {
 	);
 }
 
-function createTray(tray = null) {
-	if (!tray) {
-		const label = getLabel();
-		const icon = getIcon();
+function createTray() {
+	const icon = getIcon();
+	const label = getLabel();
 
-		tray = new Tray(icon);
-		tray.setToolTip(label);
+	const tray = new Tray(icon);
 
-		tray.on('click', () => tray.popUpContextMenu());
-	}
+	tray.setToolTip(label);
+	tray.on('click', () => tray.popUpContextMenu());
 
 	return tray;
 }

@@ -17,72 +17,76 @@ Sentry.init({
 	dsn: 'https://713782327975276ae010040b1db6ab8a@o4507887084503040.ingest.us.sentry.io/4507887098724352',
 });
 
-let tray = null;
+function createApp({ tray }) {
+	const searchProjectMenuItem = {
+		label: 'Search project...',
+		type: 'normal',
+		click: async () => {
+			const { canceled, filePaths } = await dialog.showOpenDialog({
+				properties: ['openDirectory'],
+			});
 
-function createTrayMenu() {
-	const bookmarksMenu = () =>
-		getBookmarks()
-			.slice(0, 10)
-			.map(({ basename, path, id }) => ({
-				label: basename,
-				submenu: [
-					{
-						label: 'Open',
-						click: () => {
-							spawn('code', [path], { shell: true });
-						},
-					},
-					{
-						label: 'Remove',
-						click: () => {
-							deleteBookmark(id);
-							renderApp();
-						},
-					},
-				],
-			}));
+			if (canceled) return;
 
-	return createMenu([
-		{
-			label: 'Search project...',
-			type: 'normal',
-			click: async () => {
-				const { canceled, filePaths } = await dialog.showOpenDialog({
-					properties: ['openDirectory'],
-				});
+			const filePath = filePaths.at(0);
 
-				if (canceled) return;
-
-				const filePath = filePaths.at(0);
-
-				createBookmark({
-					path: filePath,
-					basename: path.basename(filePath),
-				});
-				renderApp();
-			},
+			createBookmark({
+				path: filePath,
+				basename: path.basename(filePath),
+			});
+			createApp({ tray });
 		},
-		{ type: 'separator' },
-		...bookmarksMenu(),
-		{ type: 'separator' },
-		{
-			label: 'Quit',
-			click: () => app.quit(),
-		},
+	};
+
+	const separatorMenuItem = { type: 'separator' };
+
+	const bookmarkMenuItems = getBookmarks()
+		.slice(0, 10)
+		.map(({ basename, path, id }) => ({
+			label: basename,
+			submenu: [
+				{
+					label: 'Open',
+					click: () => {
+						spawn('code', [path], { shell: true });
+					},
+				},
+				{
+					label: 'Remove',
+					click: () => {
+						deleteBookmark(id);
+						createApp({ tray });
+					},
+				},
+			],
+		}));
+
+	const exitMenuItem = {
+		label: 'Quit',
+		click: () => app.quit(),
+	};
+
+	const contextMenu = createMenu([
+		searchProjectMenuItem,
+		separatorMenuItem,
+		...bookmarkMenuItems,
+		separatorMenuItem,
+		exitMenuItem,
 	]);
-}
 
-function renderApp() {
-	tray = createTray(tray);
-	tray.setContextMenu(createTrayMenu());
+	tray.setContextMenu(contextMenu);
 }
 
 makeAppToInitOnASingleInstance(async () => {
-	app.setLoginItemSettings({
-		openAtLogin: true,
-	});
+	if (app.isPackaged) {
+		app.setLoginItemSettings({
+			openAtLogin: true,
+		});
+	}
 
 	await app.whenReady();
 
-	renderApp();
+	const tray = createTray();
+
+	createApp({ tray });
 });
