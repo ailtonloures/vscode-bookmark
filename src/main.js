@@ -3,21 +3,30 @@ import * as Sentry from '@sentry/electron';
 import { app, dialog } from 'electron/main';
 
 import { spawn } from 'node:child_process';
-import path from 'node:path';
+import { basename } from 'node:path';
 
 import {
 	createBookmark,
 	deleteBookmark,
 	getBookmarks,
 } from './data/store/bookmark.js';
-import { createMenu, createTray } from './modules/index.js';
+import { createMenu, createTray, createWindow } from './modules/index.js';
 import { makeAppToInitOnASingleInstance } from './setup.js';
 
 Sentry.init({
 	dsn: 'https://713782327975276ae010040b1db6ab8a@o4507887084503040.ingest.us.sentry.io/4507887098724352',
 });
 
-function createApp({ tray }) {
+function registerAppEvents({ tray, win }) {
+	tray.on('click', () => tray.popUpContextMenu());
+
+	win.on('close', (event) => {
+		event.preventDefault();
+		win.hide();
+	});
+}
+
+function createApp({ tray, win }) {
 	const searchProjectMenuItem = {
 		label: 'Search project...',
 		type: 'normal',
@@ -32,9 +41,9 @@ function createApp({ tray }) {
 
 			createBookmark({
 				path: filePath,
-				basename: path.basename(filePath),
+				basename: basename(filePath),
 			});
-			createApp({ tray });
+			createApp({ tray, win });
 		},
 	};
 
@@ -55,7 +64,7 @@ function createApp({ tray }) {
 					label: 'Remove',
 					click: () => {
 						deleteBookmark(id);
-						createApp({ tray });
+						createApp({ tray, win });
 					},
 				},
 			],
@@ -63,7 +72,11 @@ function createApp({ tray }) {
 
 	const exitMenuItem = {
 		label: 'Quit',
-		click: () => app.quit(),
+		click: () => {
+			win.removeAllListeners('close');
+			win.close();
+			app.quit();
+		},
 	};
 
 	const contextMenu = createMenu([
@@ -87,5 +100,10 @@ makeAppToInitOnASingleInstance(async () => {
 	await app.whenReady();
 
 	const tray = createTray();
-	createApp({ tray });
+	const win = createWindow();
+
+	const context = { tray, win };
+
+	registerAppEvents(context);
+	createApp(context);
 });

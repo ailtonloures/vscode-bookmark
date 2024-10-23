@@ -1,5 +1,5 @@
 import { app, nativeImage, Tray } from 'electron/main';
-import path from 'node:path';
+import { resolve } from 'node:path';
 
 function getLabel() {
 	return `${app.getName()} - v${app.getVersion()}`;
@@ -7,7 +7,7 @@ function getLabel() {
 
 function getIcon() {
 	return nativeImage.createFromPath(
-		path.resolve(
+		resolve(
 			import.meta.dirname,
 			'..',
 			'..',
@@ -24,9 +24,7 @@ function createTray() {
 	const label = getLabel();
 
 	const tray = new Tray(icon);
-
 	tray.setToolTip(label);
-	tray.on('click', () => tray.popUpContextMenu());
 
 	return tray;
 }
