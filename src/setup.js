@@ -4,23 +4,17 @@ import { app } from 'electron/main';
 function hasSecondInstance() {
 	const isPrimaryInstance = app.requestSingleInstanceLock();
 
-	return !isPrimaryInstance || squirrelStartup;
+	return !isPrimaryInstance;
 }
 
-function setAppToOpenAtLogin() {
-	const { openAtLogin } = app.getLoginItemSettings();
-
-	if (openAtLogin === false)
-		app.setLoginItemSettings({
-			openAtLogin: true,
-		});
+function hasSquirrelInstance() {
+	return squirrelStartup;
 }
 
-function makeSetup(fn) {
-	if (hasSecondInstance()) app.quit();
+function makeAppToInitOnASingleInstance(fn) {
+	if (hasSecondInstance() || hasSquirrelInstance()) app.quit();
 
-	setAppToOpenAtLogin();
 	fn();
 }
 
-export { makeSetup };
+export { makeAppToInitOnASingleInstance };
