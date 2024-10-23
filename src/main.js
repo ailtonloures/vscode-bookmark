@@ -27,8 +27,17 @@ function registerAppEvents({ tray, win }) {
 }
 
 function createApp({ tray, win }) {
+	const openWindowMenuItem = {
+		label: 'Open window',
+		type: 'normal',
+		click: async () => {
+			win.show();
+			win.focus();
+		},
+	};
+
 	const searchProjectMenuItem = {
-		label: 'Search project...',
+		label: 'Search project',
 		type: 'normal',
 		click: async () => {
 			const { canceled, filePaths } = await dialog.showOpenDialog({
@@ -80,6 +89,7 @@ function createApp({ tray, win }) {
 	};
 
 	const contextMenu = createMenu([
+		openWindowMenuItem,
 		searchProjectMenuItem,
 		separatorMenuItem,
 		...bookmarkMenuItems,

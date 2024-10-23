@@ -31,11 +31,13 @@ function createWindow() {
 	const win = new BrowserWindow({
 		width: 380,
 		height: 400,
+		show: false,
 		autoHideMenuBar: true,
 		maximizable: false,
 		resizable: false,
 		fullscreen: false,
 		fullscreenable: false,
+		focusable: true,
 		title: getLabel(),
 		icon: getIcon(),
 		webPreferences: {
