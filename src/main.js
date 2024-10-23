@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/electron';
 
-import { app, dialog } from 'electron/main';
+import { app, dialog, ipcMain } from 'electron/main';
 
 import { spawn } from 'node:child_process';
 import { basename } from 'node:path';
@@ -16,6 +16,15 @@ import { makeAppToInitOnASingleInstance } from './setup.js';
 Sentry.init({
 	dsn: 'https://713782327975276ae010040b1db6ab8a@o4507887084503040.ingest.us.sentry.io/4507887098724352',
 });
+
+function registerIPCEvents({ tray, win }) {
+	ipcMain.on('create-bookmark', (event, filePath) => {
+		createBookmark({ path: filePath, basename: basename(filePath) });
+		createApp({ tray, win });
+
+		event.reply('create-bookmark', true);
+	});
+}
 
 function registerAppEvents({ tray, win }) {
 	tray.on('click', () => tray.popUpContextMenu());
@@ -114,6 +123,7 @@ makeAppToInitOnASingleInstance(async () => {
 
 	const context = { tray, win };
 
+	registerIPCEvents(context);
 	registerAppEvents(context);
 	createApp(context);
 });

@@ -1,0 +1,16 @@
+#drop-area {
+	width: 300px;
+	height: 200px;
+	border: 2px dashed #ccc;
+	border-radius: 10px;
+	text-align: center;
+	line-height: 200px;
+	font-family: Arial, sans-serif;
+	color: #999;
+	margin: 50px auto;
+}
+
+#drop-area.hover {
+	border-color: #333;
+	background-color: #f0f0f0;
+}

@@ -6,7 +6,7 @@ export default [
 	{
 		files: ['src/**/*.js'],
 	},
-	{ languageOptions: { globals: globals.node } },
+	{ languageOptions: { globals: { ...globals.node, ...globals.browser } } },
 	pluginJs.configs.recommended,
 	{
 		ignores: ['node_modules'],
