@@ -87,6 +87,5 @@ makeAppToInitOnASingleInstance(async () => {
 	await app.whenReady();
 
 	const tray = createTray();
-
 	createApp({ tray });
 });
