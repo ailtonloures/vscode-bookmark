@@ -86,6 +86,7 @@ This software uses the following open source packages:
 - [Prettier](https://prettier.io/)
 - [Sentry](https://sentry.io/)
 - [Vite](https://vite.dev/)
+- [Husky](https://github.com/typicode/husky)
 
 ## Contributing
 
