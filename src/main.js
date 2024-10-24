@@ -31,7 +31,7 @@ function registerIPCEvents(context) {
 	});
 }
 
-function registerAppEvents(context) {
+function registerAPPEvents(context) {
 	const { tray, win } = context;
 
 	tray.on('click', () => tray.popUpContextMenu());
@@ -152,6 +152,6 @@ makeAppToInitOnASingleInstance(async () => {
 	const context = { tray, win };
 
 	registerIPCEvents(context);
-	registerAppEvents(context);
+	registerAPPEvents(context);
 	renderApp(context);
 });

@@ -1,40 +1,70 @@
-// API
+// Electron API
 const { ipc, web } = window.electronAPI;
-// Elements
-const dropAreaDiv = document.getElementById('drop-area');
-const infoSpan = document.querySelector('#information span');
-// Elements state
-const state = {
+// IPC Channels
+const ipcChannels = {
+	CREATE_BOOKMARK: 'create-bookmark',
+};
+// Global state
+const globalState = {
+	sendingFile: false,
 	dropAreaDiv: {
-		initial: 'Drag and drop your files or projects here',
+		initial: 'Drag and drop your files or projects here.',
 		drop: 'Drop...',
-	},
-	infoSpan: {
-		initial: 'No files or projects found',
+		wait: 'Wait...',
+		success: 'Success!',
 	},
 };
+// Elements
+const dropAreaDiv = document.querySelector('#drop-area');
 
 function onInit() {
-	dropAreaDiv.innerText = state.dropAreaDiv.initial;
-	infoSpan.textContent = state.infoSpan.initial;
+	dropAreaDiv.textContent = globalState.dropAreaDiv.initial;
 }
 
 function onDrop(event) {
-	const filePath = web.getPathForFile(event.dataTransfer.files[0]);
-	infoSpan.textContent = filePath;
+	if (globalState.sendingFile === true) {
+		event.preventDefault();
+		return;
+	}
 
-	ipc.toMain('create-bookmark', filePath);
-	console.log(filePath);
+	globalState.sendingFile = true;
+	dropAreaDiv.textContent = globalState.dropAreaDiv.wait;
+
+	const file = event.dataTransfer.files[0];
+	const filePath = web.getPathForFile(file);
+
+	ipc.toMain(ipcChannels.CREATE_BOOKMARK, filePath);
 }
 
-function onDropOrLeave() {
+function onCreatedBookmark(success) {
+	if (success) {
+		dropAreaDiv.innerHTML = `<span class="success">${globalState.dropAreaDiv.success}</span>`;
+	}
+
+	setTimeout(() => {
+		globalState.sendingFile = false;
+		dropAreaDiv.textContent = globalState.dropAreaDiv.initial;
+	}, 1500);
+}
+
+function onDropOrLeave(event) {
+	if (globalState.sendingFile === true) {
+		event.preventDefault();
+		return;
+	}
+
 	dropAreaDiv.classList.remove('hover');
-	dropAreaDiv.innerText = state.dropAreaDiv.initial;
+	dropAreaDiv.textContent = globalState.dropAreaDiv.initial;
 }
 
-function onEnterOrOver() {
+function onEnterOrOver(event) {
+	if (globalState.sendingFile === true) {
+		event.preventDefault();
+		return;
+	}
+
 	dropAreaDiv.classList.add('hover');
-	dropAreaDiv.innerText = state.dropAreaDiv.drop;
+	dropAreaDiv.textContent = globalState.dropAreaDiv.drop;
 }
 
 function registerDOMEvents() {
@@ -45,13 +75,18 @@ function registerDOMEvents() {
 	['dragenter', 'dragover', 'dragleave', 'drop'].forEach((event) =>
 		dropAreaDiv.addEventListener(event, (e) => e.preventDefault())
 	);
-	['dragleave', 'drop'].forEach((event) => {
-		dropAreaDiv.addEventListener(event, onDropOrLeave);
-	});
-	['dragenter', 'dragover'].forEach((event) => {
-		dropAreaDiv.addEventListener(event, onEnterOrOver);
-	});
+	['dragleave', 'drop'].forEach((event) =>
+		dropAreaDiv.addEventListener(event, onDropOrLeave)
+	);
+	['dragenter', 'dragover'].forEach((event) =>
+		dropAreaDiv.addEventListener(event, onEnterOrOver)
+	);
 	dropAreaDiv.addEventListener('drop', onDrop);
 }
 
+function registerIPCEvents() {
+	ipc.onRenderer(ipcChannels.CREATE_BOOKMARK, onCreatedBookmark);
+}
+
 registerDOMEvents();
+registerIPCEvents();

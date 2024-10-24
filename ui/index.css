@@ -16,9 +16,13 @@ body {
 	border-radius: 10px;
 	text-align: center;
 	line-height: 200px;
-	font-family: Arial, sans-serif;
+	font-size: 14px;
 	color: #999;
-	margin: 50px auto;
+	margin: 40px auto;
+
+	transition:
+		background-color 0.3s ease,
+		border-color 0.3s ease;
 }
 
 #drop-area.hover {
@@ -26,15 +30,6 @@ body {
 	background-color: #f0f0f0;
 }
 
-#information {
-	text-align: center;
-	margin: -25px 0;
-}
-
-#information span {
-	margin: 10px 0;
-	color: #333;
-
-	font-weight: bold;
-	font-size: 14px;
+.success {
+	color: #2ab347;
 }

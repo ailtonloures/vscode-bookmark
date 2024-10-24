@@ -30,7 +30,7 @@ function getLabel() {
 function createWindow() {
 	const win = new BrowserWindow({
 		width: 380,
-		height: 400,
+		height: 330,
 		show: false,
 		autoHideMenuBar: true,
 		maximizable: false,
