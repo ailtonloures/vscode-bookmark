@@ -1,5 +1,5 @@
+import { app } from 'electron';
 import squirrelStartup from 'electron-squirrel-startup';
-import { app } from 'electron/main';
 
 function hasSecondInstance() {
 	const isPrimaryInstance = app.requestSingleInstanceLock();

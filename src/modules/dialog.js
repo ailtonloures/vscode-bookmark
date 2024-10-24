@@ -1,4 +1,4 @@
-import { dialog } from 'electron/main';
+import { dialog } from 'electron';
 
 async function openDialog(properties = ['openDirectory']) {
 	return dialog.showOpenDialog({

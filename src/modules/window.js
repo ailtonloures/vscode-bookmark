@@ -1,25 +1,17 @@
-import { app, BrowserWindow, nativeImage } from 'electron/main';
+import { app, BrowserWindow, nativeImage } from 'electron';
 import { resolve } from 'node:path';
 
 function getIndexHtmlPath() {
-	return resolve(import.meta.dirname, '..', '..', 'ui', 'index.html');
+	return resolve(__dirname, '..', '..', 'ui', 'index.html');
 }
 
 function getPreloadScriptPath() {
-	return resolve(import.meta.dirname, '..', 'preload.cjs');
+	return resolve(__dirname, 'preload.js');
 }
 
 function getIcon() {
 	return nativeImage.createFromPath(
-		resolve(
-			import.meta.dirname,
-			'..',
-			'..',
-			'assets',
-			'icons',
-			'png',
-			'win-icon.png'
-		)
+		resolve(__dirname, '..', '..', 'assets', 'icons', 'png', 'win-icon.png')
 	);
 }
 
@@ -47,15 +39,20 @@ function createWindow() {
 		},
 	});
 
-	win.loadFile(getIndexHtmlPath());
+	// eslint-disable-next-line no-undef
+	const devURL = MAIN_WINDOW_VITE_DEV_SERVER_URL;
 
-	if (!app.isPackaged) {
+	if (devURL) {
+		win.loadURL(devURL);
+
 		setTimeout(() => {
 			win.webContents.openDevTools({
 				mode: 'detach',
 				activate: true,
 			});
 		}, 1000);
+	} else {
+		win.loadFile(getIndexHtmlPath());
 	}
 
 	return win;

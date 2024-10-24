@@ -1,5 +1,6 @@
-import { FusesPlugin } from '@electron-forge/plugin-fuses';
-import { FuseV1Options, FuseVersion } from '@electron/fuses';
+const { FusesPlugin } = require('@electron-forge/plugin-fuses');
+const { VitePlugin } = require('@electron-forge/plugin-vite');
+const { FuseV1Options, FuseVersion } = require('@electron/fuses');
 
 const commonLinuxConfig = {
 	config: {
@@ -13,7 +14,7 @@ const commonLinuxConfig = {
 	},
 };
 
-export default {
+module.exports = {
 	buildIdentifier: 'vscode-bookmark',
 	packagerConfig: {
 		asar: true,
@@ -35,6 +36,24 @@ export default {
 			[FuseV1Options.EnableNodeCliInspectArguments]: false,
 			[FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
 			[FuseV1Options.OnlyLoadAppFromAsar]: true,
+		}),
+		new VitePlugin({
+			build: [
+				{
+					entry: 'src/main.js',
+					config: 'vite.main.config.mjs',
+				},
+				{
+					entry: 'src/preload.js',
+					config: 'vite.preload.config.mjs',
+				},
+			],
+			renderer: [
+				{
+					name: 'main_window',
+					config: 'vite.renderer.config.mjs',
+				},
+			],
 		}),
 	],
 	makers: [

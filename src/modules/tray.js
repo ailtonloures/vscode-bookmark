@@ -1,4 +1,4 @@
-import { app, nativeImage, Tray } from 'electron/main';
+import { app, nativeImage, Tray } from 'electron';
 import { resolve } from 'node:path';
 
 function getLabel() {
@@ -8,7 +8,7 @@ function getLabel() {
 function getIcon() {
 	return nativeImage.createFromPath(
 		resolve(
-			import.meta.dirname,
+			__dirname,
 			'..',
 			'..',
 			'assets',

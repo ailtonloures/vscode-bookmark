@@ -18,17 +18,17 @@ const globalState = {
 const dropAreaDiv = document.querySelector('#drop-area');
 
 function onInit() {
-	dropAreaDiv.textContent = globalState.dropAreaDiv.initial;
+	setDropAreaDivText(globalState.dropAreaDiv.initial);
 }
 
 function onDrop(event) {
-	if (globalState.sendingFile === true) {
+	if (isSendingFile()) {
 		event.preventDefault();
 		return;
 	}
 
-	globalState.sendingFile = true;
-	dropAreaDiv.textContent = globalState.dropAreaDiv.wait;
+	setSendingFileState(true);
+	setDropAreaDivText(globalState.dropAreaDiv.wait);
 
 	const file = event.dataTransfer.files[0];
 	const filePath = web.getPathForFile(file);
@@ -38,33 +38,47 @@ function onDrop(event) {
 
 function onCreatedBookmark(success) {
 	if (success) {
-		dropAreaDiv.innerHTML = `<span class="success">${globalState.dropAreaDiv.success}</span>`;
+		setDropAreaDivText(
+			`<span class="success">${globalState.dropAreaDiv.success}</span>`
+		);
 	}
 
 	setTimeout(() => {
-		globalState.sendingFile = false;
-		dropAreaDiv.textContent = globalState.dropAreaDiv.initial;
+		setSendingFileState(false);
+		setDropAreaDivText(globalState.dropAreaDiv.initial);
 	}, 1500);
 }
 
 function onDropOrLeave(event) {
-	if (globalState.sendingFile === true) {
+	if (isSendingFile()) {
 		event.preventDefault();
 		return;
 	}
 
 	dropAreaDiv.classList.remove('hover');
-	dropAreaDiv.textContent = globalState.dropAreaDiv.initial;
+	setDropAreaDivText(globalState.dropAreaDiv.initial);
 }
 
 function onEnterOrOver(event) {
-	if (globalState.sendingFile === true) {
+	if (isSendingFile()) {
 		event.preventDefault();
 		return;
 	}
 
 	dropAreaDiv.classList.add('hover');
-	dropAreaDiv.textContent = globalState.dropAreaDiv.drop;
+	setDropAreaDivText(globalState.dropAreaDiv.drop);
+}
+
+function isSendingFile() {
+	return globalState.sendingFile;
+}
+
+function setSendingFileState(sending) {
+	globalState.sendingFile = sending;
+}
+
+function setDropAreaDivText(value) {
+	dropAreaDiv.innerHTML = value;
 }
 
 function registerDOMEvents() {

@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/electron';
 
-import { app, ipcMain } from 'electron/main';
+import { app, ipcMain } from 'electron';
 
 import { spawn } from 'node:child_process';
 import { basename } from 'node:path';

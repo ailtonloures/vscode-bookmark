@@ -1,4 +1,4 @@
-const { contextBridge, webUtils, ipcRenderer } = require('electron');
+import { contextBridge, ipcRenderer, webUtils } from 'electron';
 
 contextBridge.exposeInMainWorld('electronAPI', {
 	web: webUtils,
