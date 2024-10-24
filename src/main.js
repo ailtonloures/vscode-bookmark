@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/electron';
 
-import { app, dialog, ipcMain } from 'electron/main';
+import { app, ipcMain } from 'electron/main';
 
 import { spawn } from 'node:child_process';
 import { basename } from 'node:path';
@@ -10,23 +10,30 @@ import {
 	deleteBookmark,
 	getBookmarks,
 } from './data/store/bookmark.js';
-import { createMenu, createTray, createWindow } from './modules/index.js';
+import {
+	createMenu,
+	createTray,
+	createWindow,
+	openDialog,
+} from './modules/index.js';
 import { makeAppToInitOnASingleInstance } from './setup.js';
 
 Sentry.init({
 	dsn: 'https://713782327975276ae010040b1db6ab8a@o4507887084503040.ingest.us.sentry.io/4507887098724352',
 });
 
-function registerIPCEvents({ tray, win }) {
+function registerIPCEvents(context) {
 	ipcMain.on('create-bookmark', (event, filePath) => {
-		createBookmark({ path: filePath, basename: basename(filePath) });
-		createApp({ tray, win });
+		addBookmark(filePath);
+		renderApp(context);
 
 		event.reply('create-bookmark', true);
 	});
 }
 
-function registerAppEvents({ tray, win }) {
+function registerAppEvents(context) {
+	const { tray, win } = context;
+
 	tray.on('click', () => tray.popUpContextMenu());
 
 	win.on('close', (event) => {
@@ -35,9 +42,27 @@ function registerAppEvents({ tray, win }) {
 	});
 }
 
-function createApp({ tray, win }) {
-	const openWindowMenuItem = {
-		label: 'Open window',
+function addBookmark(filePath) {
+	createBookmark({
+		path: filePath,
+		basename: basename(filePath),
+	});
+}
+
+async function getFilePath(properties = ['openDirectory']) {
+	const { canceled, filePaths } = await openDialog(properties);
+
+	if (canceled) return;
+	const filePath = filePaths.at(0);
+
+	return filePath;
+}
+
+function renderApp(context) {
+	const { tray, win } = context;
+
+	const dragAndDropMenuItem = {
+		label: 'Add by drag and drop',
 		type: 'normal',
 		click: async () => {
 			win.show();
@@ -49,19 +74,21 @@ function createApp({ tray, win }) {
 		label: 'Search project',
 		type: 'normal',
 		click: async () => {
-			const { canceled, filePaths } = await dialog.showOpenDialog({
-				properties: ['openDirectory'],
-			});
+			const filePath = await getFilePath();
 
-			if (canceled) return;
+			addBookmark(filePath);
+			renderApp({ tray, win });
+		},
+	};
 
-			const filePath = filePaths.at(0);
+	const searchFileMenuItem = {
+		label: 'Search file',
+		type: 'normal',
+		click: async () => {
+			const filePath = await getFilePath(['openFile']);
 
-			createBookmark({
-				path: filePath,
-				basename: basename(filePath),
-			});
-			createApp({ tray, win });
+			addBookmark(filePath);
+			renderApp({ tray, win });
 		},
 	};
 
@@ -82,7 +109,7 @@ function createApp({ tray, win }) {
 					label: 'Remove',
 					click: () => {
 						deleteBookmark(id);
-						createApp({ tray, win });
+						renderApp({ tray, win });
 					},
 				},
 			],
@@ -98,8 +125,9 @@ function createApp({ tray, win }) {
 	};
 
 	const contextMenu = createMenu([
-		openWindowMenuItem,
+		dragAndDropMenuItem,
 		searchProjectMenuItem,
+		searchFileMenuItem,
 		separatorMenuItem,
 		...bookmarkMenuItems,
 		separatorMenuItem,
@@ -125,5 +153,5 @@ makeAppToInitOnASingleInstance(async () => {
 
 	registerIPCEvents(context);
 	registerAppEvents(context);
-	createApp(context);
+	renderApp(context);
 });

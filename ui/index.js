@@ -1,32 +1,57 @@
+// API
 const { ipc, web } = window.electronAPI;
-
+// Elements
 const dropAreaDiv = document.getElementById('drop-area');
+const infoSpan = document.querySelector('#information span');
+// Elements state
+const state = {
+	dropAreaDiv: {
+		initial: 'Drag and drop your files or projects here',
+		drop: 'Drop...',
+	},
+	infoSpan: {
+		initial: 'No files or projects found',
+	},
+};
 
-['dragenter', 'dragover', 'dragleave', 'drop'].forEach((event) => {
-	dropAreaDiv.addEventListener(event, (e) => e.preventDefault());
-});
+function onInit() {
+	dropAreaDiv.innerText = state.dropAreaDiv.initial;
+	infoSpan.textContent = state.infoSpan.initial;
+}
 
-// Adiciona classes de estilo ao arrastar o arquivo
-['dragenter', 'dragover'].forEach((event) => {
-	dropAreaDiv.addEventListener(event, () => {
-		dropAreaDiv.classList.add('hover');
-		dropAreaDiv.innerText = 'Solte...';
-	});
-});
-
-// Remove a classe quando o arquivo não está mais sobre a área
-['dragleave', 'drop'].forEach((event) => {
-	dropAreaDiv.addEventListener(event, () => {
-		dropAreaDiv.classList.remove('hover');
-		dropAreaDiv.innerText = 'Arraste e solte seus arquivos aqui';
-	});
-});
-
-dropAreaDiv.addEventListener('drop', function (event) {
+function onDrop(event) {
 	const filePath = web.getPathForFile(event.dataTransfer.files[0]);
+	infoSpan.textContent = filePath;
+
 	ipc.toMain('create-bookmark', filePath);
-
 	console.log(filePath);
-});
+}
 
-// toMain('create-bookmark', '/path/to/bookmark');
+function onDropOrLeave() {
+	dropAreaDiv.classList.remove('hover');
+	dropAreaDiv.innerText = state.dropAreaDiv.initial;
+}
+
+function onEnterOrOver() {
+	dropAreaDiv.classList.add('hover');
+	dropAreaDiv.innerText = state.dropAreaDiv.drop;
+}
+
+function registerDOMEvents() {
+	// Window events
+	window.addEventListener('DOMContentLoaded', onInit);
+
+	// Drop Area events
+	['dragenter', 'dragover', 'dragleave', 'drop'].forEach((event) =>
+		dropAreaDiv.addEventListener(event, (e) => e.preventDefault())
+	);
+	['dragleave', 'drop'].forEach((event) => {
+		dropAreaDiv.addEventListener(event, onDropOrLeave);
+	});
+	['dragenter', 'dragover'].forEach((event) => {
+		dropAreaDiv.addEventListener(event, onEnterOrOver);
+	});
+	dropAreaDiv.addEventListener('drop', onDrop);
+}
+
+registerDOMEvents();
