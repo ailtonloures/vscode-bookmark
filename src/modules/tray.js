@@ -7,15 +7,7 @@ function getLabel() {
 
 function getIcon() {
 	return nativeImage.createFromPath(
-		resolve(
-			__dirname,
-			'..',
-			'..',
-			'assets',
-			'icons',
-			'png',
-			'tray-icon.png'
-		)
+		resolve(app.getAppPath(), 'assets', 'icons', 'main', 'tray-icon.png')
 	);
 }
 
