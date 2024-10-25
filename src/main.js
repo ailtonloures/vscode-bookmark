@@ -10,12 +10,7 @@ import {
 	deleteBookmark,
 	getBookmarks,
 } from './data/store/bookmark.js';
-import {
-	createMenu,
-	createTray,
-	createWindow,
-	openDialog,
-} from './modules/index.js';
+import { createMenu, createTray, createWindow, openDialog } from './modules';
 import { makeAppToInitOnASingleInstance } from './setup.js';
 
 Sentry.init({

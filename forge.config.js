@@ -2,24 +2,31 @@ const { FusesPlugin } = require('@electron-forge/plugin-fuses');
 const { VitePlugin } = require('@electron-forge/plugin-vite');
 const { FuseV1Options, FuseVersion } = require('@electron/fuses');
 
+const {
+	name: projectName,
+	author,
+	productName,
+	repository: { owner },
+} = require('./package.json');
+
 const commonLinuxConfig = {
 	config: {
 		options: {
 			icon: 'assets/icons/icon.png',
-			maintainer: 'Ailton Loures',
+			maintainer: author,
 			categories: ['Development', 'Utility'],
-			productName: 'VSCodeBookmark',
-			genericName: 'VSCode Bookmark',
+			productName: productName.trim(),
+			genericName: productName,
 		},
 	},
 };
 
 module.exports = {
-	buildIdentifier: 'vscode-bookmark',
+	buildIdentifier: 'product',
 	packagerConfig: {
 		asar: true,
 		icon: 'assets/icons/icon',
-		executableName: 'vscode-bookmark',
+		executableName: projectName,
 	},
 	plugins: [
 		{
@@ -84,8 +91,8 @@ module.exports = {
 			name: '@electron-forge/publisher-github',
 			config: {
 				repository: {
-					owner: 'ailtonloures',
-					name: 'vscode-bookmark',
+					owner: owner,
+					name: projectName,
 				},
 				draft: true,
 			},
