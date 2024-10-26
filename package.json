@@ -20,7 +20,8 @@
 		"electron-store",
 		"vscode",
 		"desktop",
-		"sentry"
+		"sentry",
+		"vite"
 	],
 	"license": "MIT",
 	"main": ".vite/build/main.js",
