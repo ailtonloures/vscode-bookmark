@@ -1,7 +1,7 @@
 import { app, nativeImage } from 'electron';
 import { resolve } from 'node:path';
 
-import { VITE } from '../constants';
+import { isDevMode } from './vite';
 
 function getIcon(iconName) {
 	let iconPath = resolve(
@@ -12,7 +12,7 @@ function getIcon(iconName) {
 		iconName
 	);
 
-	if (VITE.DEV) {
+	if (isDevMode()) {
 		iconPath = resolve(
 			app.getAppPath(),
 			'public',

@@ -1,6 +1,6 @@
 import { Tray } from 'electron';
 
-import { getIcon, getLabel } from '../shared/helpers';
+import { getIcon, getLabel } from './utils';
 
 function createTray() {
 	const icon = getIcon('tray-icon.png');

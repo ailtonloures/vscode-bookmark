@@ -1,8 +1,7 @@
 import { BrowserWindow } from 'electron';
 import { resolve } from 'node:path';
 
-import { VITE } from '../shared/constants';
-import { getIcon, getLabel } from '../shared/helpers';
+import { devURL, getIcon, getLabel, isDevMode } from './utils';
 
 function createWindow() {
 	const win = new BrowserWindow({
@@ -24,8 +23,8 @@ function createWindow() {
 		},
 	});
 
-	if (VITE.DEV) {
-		win.loadURL(VITE.DEV);
+	if (isDevMode()) {
+		win.loadURL(devURL());
 		win.webContents.openDevTools({
 			mode: 'detach',
 			activate: true,
