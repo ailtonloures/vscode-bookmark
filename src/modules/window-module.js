@@ -1,15 +1,8 @@
-import { app, BrowserWindow, nativeImage } from 'electron';
+import { BrowserWindow } from 'electron';
 import { resolve } from 'node:path';
 
-function getIcon() {
-	return nativeImage.createFromPath(
-		resolve(app.getAppPath(), 'assets', 'icons', 'main', 'win-icon.png')
-	);
-}
-
-function getLabel() {
-	return app.getName();
-}
+import { VITE } from '../shared/constants';
+import { getIcon, getLabel } from '../shared/helpers';
 
 function createWindow() {
 	const win = new BrowserWindow({
@@ -23,7 +16,7 @@ function createWindow() {
 		fullscreenable: false,
 		focusable: true,
 		title: getLabel(),
-		icon: getIcon(),
+		icon: getIcon('win-icon.png'),
 		webPreferences: {
 			preload: resolve(__dirname, 'preload.js'),
 			contextIsolation: true,
@@ -31,11 +24,8 @@ function createWindow() {
 		},
 	});
 
-	// eslint-disable-next-line no-undef
-	const devURL = MAIN_WINDOW_VITE_DEV_SERVER_URL;
-
-	if (devURL) {
-		win.loadURL(devURL);
+	if (VITE.DEV) {
+		win.loadURL(VITE.DEV);
 		win.webContents.openDevTools({
 			mode: 'detach',
 			activate: true,

@@ -12,7 +12,7 @@ const {
 const commonLinuxConfig = {
 	config: {
 		options: {
-			icon: 'assets/icons/build/icon.png',
+			icon: 'public/icons/build/icon.png',
 			maintainer: author,
 			categories: ['Development', 'Utility'],
 			productName: productName.trim(),
@@ -26,8 +26,7 @@ module.exports = {
 	packagerConfig: {
 		asar: true,
 		executableName: projectName,
-		icon: 'assets/icons/build/icon',
-		extraResource: ['assets/icons/main'],
+		icon: 'public/icons/build/icon',
 	},
 	plugins: [
 		{
@@ -69,7 +68,7 @@ module.exports = {
 			name: '@electron-forge/maker-squirrel',
 			platforms: ['win32'],
 			config: {
-				setupIcon: 'assets/icons/build/icon.ico',
+				setupIcon: 'public/icons/build/icon.ico',
 			},
 		},
 		{

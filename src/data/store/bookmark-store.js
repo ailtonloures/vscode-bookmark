@@ -1,14 +1,16 @@
-import store from './store.js';
+import { basename } from 'node:path';
+
+import store from './store';
 
 const storeName = 'bookmarks';
 
-function createBookmark({ path, basename }) {
+function createBookmark(filePath) {
 	const bookmarkList = getBookmarks();
 
 	store.set(storeName, [
 		{
-			path,
-			basename,
+			path: filePath,
+			basename: basename(filePath),
 			id: new Date().getTime(),
 		},
 		...bookmarkList,
@@ -16,7 +18,7 @@ function createBookmark({ path, basename }) {
 }
 
 function getBookmarks() {
-	return store.get(storeName);
+	return store.get(storeName).slice(0, 10);
 }
 
 function deleteBookmark(id) {

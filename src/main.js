@@ -3,30 +3,52 @@ import * as Sentry from '@sentry/electron';
 import { app, ipcMain } from 'electron';
 
 import { spawn } from 'node:child_process';
-import { basename } from 'node:path';
 
 import {
 	createBookmark,
 	deleteBookmark,
 	getBookmarks,
-} from './data/store/bookmark.js';
+} from './data/store/bookmark-store';
 import { createMenu, createTray, createWindow, openDialog } from './modules';
-import { makeAppToInitOnASingleInstance } from './setup.js';
+import { makeAppToInitOnASingleInstance } from './setup';
 
 Sentry.init({
 	dsn: 'https://713782327975276ae010040b1db6ab8a@o4507887084503040.ingest.us.sentry.io/4507887098724352',
 });
 
-function registerIPCEvents(context) {
+makeAppToInitOnASingleInstance(async () => {
+	if (app.isPackaged) {
+		app.setLoginItemSettings({
+			openAtLogin: true,
+		});
+	}
+
+	await app.whenReady();
+
+	const context = createAppContext();
+
+	registerIpcMainEvents(context);
+	registerAppEvents(context);
+	renderApp(context);
+});
+
+function createAppContext() {
+	const tray = createTray();
+	const win = createWindow();
+
+	return { tray, win };
+}
+
+function registerIpcMainEvents(context) {
 	ipcMain.on('create-bookmark', (event, filePath) => {
-		addBookmark(filePath);
+		createBookmark(filePath);
 		renderApp(context);
 
 		event.reply('create-bookmark', true);
 	});
 }
 
-function registerAPPEvents(context) {
+function registerAppEvents(context) {
 	const { tray, win } = context;
 
 	tray.on('click', () => tray.popUpContextMenu());
@@ -35,22 +57,6 @@ function registerAPPEvents(context) {
 		event.preventDefault();
 		win.hide();
 	});
-}
-
-function addBookmark(filePath) {
-	createBookmark({
-		path: filePath,
-		basename: basename(filePath),
-	});
-}
-
-async function getFilePath(properties = ['openDirectory']) {
-	const { canceled, filePaths } = await openDialog(properties);
-
-	if (canceled) return;
-	const filePath = filePaths.at(0);
-
-	return filePath;
 }
 
 function renderApp(context) {
@@ -65,50 +71,39 @@ function renderApp(context) {
 		},
 	};
 
-	const searchProjectMenuItem = {
-		label: 'Search project',
+	const searchMenuItem = (label, dialogProperties) => ({
+		label,
 		type: 'normal',
 		click: async () => {
-			const filePath = await getFilePath();
+			const filePath = await openDialog(dialogProperties);
 
-			addBookmark(filePath);
-			renderApp({ tray, win });
+			if (!filePath) return;
+
+			createBookmark(filePath);
+			renderApp(context);
 		},
-	};
-
-	const searchFileMenuItem = {
-		label: 'Search file',
-		type: 'normal',
-		click: async () => {
-			const filePath = await getFilePath(['openFile']);
-
-			addBookmark(filePath);
-			renderApp({ tray, win });
-		},
-	};
+	});
 
 	const separatorMenuItem = { type: 'separator' };
 
-	const bookmarkMenuItems = getBookmarks()
-		.slice(0, 10)
-		.map(({ basename, path, id }) => ({
-			label: basename,
-			submenu: [
-				{
-					label: 'Open',
-					click: () => {
-						spawn('code', [path], { shell: true });
-					},
+	const bookmarkMenuItems = getBookmarks().map(({ basename, path, id }) => ({
+		label: basename,
+		submenu: [
+			{
+				label: 'Open',
+				click: () => {
+					spawn('code', [path], { shell: true });
 				},
-				{
-					label: 'Remove',
-					click: () => {
-						deleteBookmark(id);
-						renderApp({ tray, win });
-					},
+			},
+			{
+				label: 'Remove',
+				click: () => {
+					deleteBookmark(id);
+					renderApp(context);
 				},
-			],
-		}));
+			},
+		],
+	}));
 
 	const exitMenuItem = {
 		label: 'Quit',
@@ -121,8 +116,8 @@ function renderApp(context) {
 
 	const contextMenu = createMenu([
 		dragAndDropMenuItem,
-		searchProjectMenuItem,
-		searchFileMenuItem,
+		searchMenuItem('Search project', ['openDirectory']),
+		searchMenuItem('Search file', ['openFile']),
 		separatorMenuItem,
 		...bookmarkMenuItems,
 		separatorMenuItem,
@@ -131,22 +126,3 @@ function renderApp(context) {
 
 	tray.setContextMenu(contextMenu);
 }
-
-makeAppToInitOnASingleInstance(async () => {
-	if (app.isPackaged) {
-		app.setLoginItemSettings({
-			openAtLogin: true,
-		});
-	}
-
-	await app.whenReady();
-
-	const tray = createTray();
-	const win = createWindow();
-
-	const context = { tray, win };
-
-	registerIPCEvents(context);
-	registerAPPEvents(context);
-	renderApp(context);
-});

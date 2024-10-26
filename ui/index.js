@@ -98,9 +98,9 @@ function registerDOMEvents() {
 	dropAreaDiv.addEventListener('drop', onDrop);
 }
 
-function registerIPCEvents() {
+function registerIpcRendererEvents() {
 	ipc.onRenderer(ipcChannels.CREATE_BOOKMARK, onCreatedBookmark);
 }
 
 registerDOMEvents();
-registerIPCEvents();
+registerIpcRendererEvents();
