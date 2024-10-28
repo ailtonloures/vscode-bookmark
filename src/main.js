@@ -3,13 +3,13 @@ import * as Sentry from '@sentry/electron';
 import { app, ipcMain } from 'electron';
 import { spawn } from 'node:child_process';
 
+import { makeAppToInitOnASingleInstance } from './core';
 import {
 	createBookmark,
 	deleteBookmark,
 	getBookmarks,
-} from './data/store/bookmark-store';
+} from './data/store/bookmark';
 import { createMenu, createTray, createWindow, openDialog } from './modules';
-import { makeAppToInitOnASingleInstance } from './setup';
 
 Sentry.init({
 	dsn: 'https://713782327975276ae010040b1db6ab8a@o4507887084503040.ingest.us.sentry.io/4507887098724352',
