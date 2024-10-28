@@ -1,3 +1,7 @@
+:root {
+	color-scheme: light dark;
+}
+
 body {
 	margin: 0;
 	padding: 0;
@@ -5,8 +9,6 @@ body {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 16px;
 	line-height: 1.6;
-	color: #333;
-	background-color: #f4f4f4;
 }
 
 #drop-area {
@@ -25,9 +27,28 @@ body {
 		border-color 0.3s ease;
 }
 
-#drop-area.hover {
-	border-color: #333;
-	background-color: #f0f0f0;
+@media (prefers-color-schema: light) {
+	body {
+		color: #333;
+		background-color: #f4f4f4;
+	}
+
+	#drop-area.hover {
+		border-color: #333;
+		background-color: #f0f0f0;
+	}
+}
+
+@media (prefers-color-schema: dark) {
+	body {
+		color: #f4f4f4;
+		background-color: #333;
+	}
+
+	#drop-area.hover {
+		border-color: #f0f0f0;
+		background-color: #131313;
+	}
 }
 
 .success {
