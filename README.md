@@ -1,20 +1,19 @@
 <div align="center">
  <h1>
 <br/>
-  <img src="./assets/icons/icon.png" alt="VSCode Bookmark" width="120">
+  <img src="./public/icons/build/icon.png" alt="VSCode Bookmark" width="120">
 <br/>
 <br/>
 VSCode Bookmark
-</h1>
-
-<p>A utility to save your favorite projects and open them easily in vscode.</p>
 
 ![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads/ailtonloures/vscode-bookmark/latest/total)
 ![GitHub Release](https://img.shields.io/github/v/release/ailtonloures/vscode-bookmark)
 ![GitHub Repo stars](https://img.shields.io/github/stars/ailtonloures/vscode-bookmark)
 ![GitHub License](https://img.shields.io/github/license/ailtonloures/vscode-bookmark)
+</h1>
 
-![screenshot](./assets/gifs/screenshot.gif)
+<p>A utility to save your favorite projects and open them easily in vscode.</p>
+
 </div>
 
 ## Support for
@@ -41,8 +40,9 @@ VSCode Bookmark
 
 ### Requirements
 
+- [Visual Studio Code](https://code.visualstudio.com/)
 - [Git](https://git-scm.com/)
-- [Node LTS](https://nodejs.org/pt)
+- [Node.js LTS](https://nodejs.org/pt)
 
 ### How to use
 
@@ -85,6 +85,8 @@ This software uses the following open source packages:
 - [ESlint](https://eslint.org/)
 - [Prettier](https://prettier.io/)
 - [Sentry](https://sentry.io/)
+- [Vite](https://vite.dev/)
+- [Husky](https://github.com/typicode/husky)
 
 ## Contributing
 

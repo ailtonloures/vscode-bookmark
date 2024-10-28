@@ -1,24 +1,32 @@
-import { FusesPlugin } from '@electron-forge/plugin-fuses';
-import { FuseV1Options, FuseVersion } from '@electron/fuses';
+const { FusesPlugin } = require('@electron-forge/plugin-fuses');
+const { VitePlugin } = require('@electron-forge/plugin-vite');
+const { FuseV1Options, FuseVersion } = require('@electron/fuses');
+
+const {
+	name: projectName,
+	author,
+	productName,
+	repository: { owner },
+} = require('./package.json');
 
 const commonLinuxConfig = {
 	config: {
 		options: {
-			icon: 'assets/icons/icon.png',
-			maintainer: 'Ailton Loures',
+			icon: 'public/icons/build/icon.png',
+			maintainer: author,
 			categories: ['Development', 'Utility'],
-			productName: 'VSCodeBookmark',
-			genericName: 'VSCode Bookmark',
+			productName: productName.trim(),
+			genericName: productName,
 		},
 	},
 };
 
-export default {
-	buildIdentifier: 'vscode-bookmark',
+module.exports = {
+	buildIdentifier: 'product',
 	packagerConfig: {
 		asar: true,
-		icon: 'assets/icons/icon',
-		executableName: 'vscode-bookmark',
+		executableName: projectName,
+		icon: 'public/icons/build/icon',
 	},
 	plugins: [
 		{
@@ -36,13 +44,31 @@ export default {
 			[FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
 			[FuseV1Options.OnlyLoadAppFromAsar]: true,
 		}),
+		new VitePlugin({
+			build: [
+				{
+					entry: 'src/main.js',
+					config: 'vite.main.config.mjs',
+				},
+				{
+					entry: 'src/preload.js',
+					config: 'vite.preload.config.mjs',
+				},
+			],
+			renderer: [
+				{
+					name: 'main_window',
+					config: 'vite.renderer.config.mjs',
+				},
+			],
+		}),
 	],
 	makers: [
 		{
 			name: '@electron-forge/maker-squirrel',
 			platforms: ['win32'],
 			config: {
-				setupIcon: 'assets/icons/icon.ico',
+				setupIcon: 'public/icons/build/icon.ico',
 			},
 		},
 		{
@@ -65,8 +91,8 @@ export default {
 			name: '@electron-forge/publisher-github',
 			config: {
 				repository: {
-					owner: 'ailtonloures',
-					name: 'vscode-bookmark',
+					owner: owner,
+					name: projectName,
 				},
 				draft: true,
 			},

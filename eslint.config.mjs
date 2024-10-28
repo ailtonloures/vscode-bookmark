@@ -4,12 +4,12 @@ import globals from 'globals';
 
 export default [
 	{
-		files: ['src/**/*.js'],
+		files: ['src/**/*.js', 'ui/**/*.js'],
 	},
-	{ languageOptions: { globals: globals.node } },
+	{ languageOptions: { globals: { ...globals.node, ...globals.browser } } },
 	pluginJs.configs.recommended,
 	{
-		ignores: ['node_modules'],
+		ignores: ['node_modules', '.vite'],
 	},
 	eslintConfigPrettier,
 ];

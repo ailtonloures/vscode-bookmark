@@ -13,3 +13,6 @@ out/
 # Markdown files
 *.md
 *.json
+
+# Vite build
+.vite

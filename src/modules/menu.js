@@ -1,4 +1,4 @@
-import { Menu } from 'electron/main';
+import { Menu } from 'electron';
 
 function createMenu(template = []) {
 	return Menu.buildFromTemplate(template);

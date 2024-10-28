@@ -1,2 +1,4 @@
-export * from './menu.js';
-export * from './tray.js';
+export * from './dialog';
+export * from './menu';
+export * from './tray';
+export * from './window';

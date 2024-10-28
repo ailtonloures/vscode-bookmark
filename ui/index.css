@@ -1,0 +1,56 @@
+:root {
+	color-scheme: light dark;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	line-height: 1.6;
+}
+
+#drop-area {
+	width: 300px;
+	height: 200px;
+	border: 2px dashed #ccc;
+	border-radius: 10px;
+	text-align: center;
+	line-height: 200px;
+	font-size: 14px;
+	color: #999;
+	margin: 40px auto;
+
+	transition:
+		background-color 0.3s ease,
+		border-color 0.3s ease;
+}
+
+@media (prefers-color-schema: light) {
+	body {
+		color: #333;
+		background-color: #f4f4f4;
+	}
+
+	#drop-area.hover {
+		border-color: #333;
+		background-color: #f0f0f0;
+	}
+}
+
+@media (prefers-color-schema: dark) {
+	body {
+		color: #f4f4f4;
+		background-color: #333;
+	}
+
+	#drop-area.hover {
+		border-color: #f0f0f0;
+		background-color: #131313;
+	}
+}
+
+.success {
+	color: #2ab347;
+}
