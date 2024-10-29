@@ -17,8 +17,8 @@ function createBookmark(filePath) {
 	]);
 }
 
-function getBookmarks() {
-	return store.get(storeName).slice(0, 10);
+function getBookmarks(limit = 10) {
+	return store.get(storeName).slice(0, limit);
 }
 
 function deleteBookmark(id) {
