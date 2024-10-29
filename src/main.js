@@ -74,11 +74,11 @@ function renderApp(context) {
 		label,
 		type: 'normal',
 		click: async () => {
-			const filePath = await openDialog(dialogProperties);
+			const filePaths = await openDialog(dialogProperties);
 
-			if (!filePath) return;
+			if (!filePaths) return;
 
-			createBookmark(filePath);
+			createBookmark(filePaths.at(0));
 			renderApp(context);
 		},
 	});
