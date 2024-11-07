@@ -12,4 +12,13 @@ export default [
 		ignores: ['node_modules', '.vite'],
 	},
 	eslintConfigPrettier,
+	{
+		rules: {
+			indent: ['error', 'tab'],
+			quotes: ['error', 'single'],
+			'comma-dangle': ['error', 'always-multiline'],
+			'semi-spacing': ['error', {'before': false, 'after': true}],
+			semi: ['error', 'always'],
+		},
+	},
 ];
