@@ -1,5 +1,6 @@
-import { BrowserWindow } from 'electron';
 import { resolve } from 'node:path';
+
+import { BrowserWindow } from 'electron';
 
 import { devURL, getIcon, getLabel, isDevMode } from './utils';
 
