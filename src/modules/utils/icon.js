@@ -1,5 +1,6 @@
-import { nativeImage } from 'electron';
 import { resolve } from 'node:path';
+
+import { nativeImage } from 'electron';
 
 function getIcon(iconName) {
 	return nativeImage.createFromPath(

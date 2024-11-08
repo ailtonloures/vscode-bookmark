@@ -2,7 +2,7 @@
 	"name": "vscode-bookmark",
 	"productName": "VSCode Bookmark",
 	"description": "A utility to save your favorite projects and open them easily in vscode.",
-	"version": "1.2.2",
+	"version": "1.2.3",
 	"author": "Ailton Loures",
 	"homepage": "https://github.com/ailtonloures/vscode-bookmark#readme",
 	"repository": {
@@ -55,6 +55,8 @@
 		"electron-icon-maker": "^0.0.5",
 		"eslint": "^9.9.1",
 		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-import": "^2.31.0",
+		"eslint-plugin-prettier": "^5.2.1",
 		"globals": "^15.9.0",
 		"husky": "^9.1.6",
 		"lint-staged": "^15.2.10",
