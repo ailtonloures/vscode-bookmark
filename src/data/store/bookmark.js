@@ -4,7 +4,7 @@ import store from './store';
 
 const storeName = 'bookmarks';
 
-function createBookmark(filePath) {
+function createBookmark({ filePath, wsl = false }) {
 	const bookmarkList = getBookmarks();
 
 	store.set(storeName, [
@@ -12,6 +12,7 @@ function createBookmark(filePath) {
 			path: filePath,
 			basename: basename(filePath),
 			id: new Date().getTime(),
+			wsl,
 		},
 		...bookmarkList,
 	]);

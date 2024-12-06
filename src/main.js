@@ -1,16 +1,16 @@
-import { spawn } from 'node:child_process';
-
 import * as Sentry from '@sentry/electron';
 import { app, ipcMain } from 'electron';
 
-import { makeAppToInitOnASingleInstance } from './core';
+import { makeAppToInitOnASingleInstance } from './core/setup';
+import { openIntoVsCode } from './core/vscode';
+import { filePathIsFromWsl, wslBookmarkDataAdapter } from './core/wsl';
 import {
 	createBookmark,
 	deleteBookmark,
 	getBookmarks,
 } from './data/store/bookmark';
-import { createMenu, createTray, createWindow } from './modules';
-import { openDialog } from './modules/utils';
+import { createMenu, createTray, createWindow } from './electron';
+import { openDialog } from './electron/utils';
 
 Sentry.init({
 	dsn: 'https://713782327975276ae010040b1db6ab8a@o4507887084503040.ingest.us.sentry.io/4507887098724352',
@@ -41,7 +41,9 @@ function createAppContext() {
 
 function registerIpcMainEvents(context) {
 	ipcMain.on('create-bookmark', (event, filePath) => {
-		createBookmark(filePath);
+		const filePathData = getBookmarkDataFromFilePath(filePath);
+
+		createBookmark(filePathData);
 		renderApp(context);
 
 		event.reply('create-bookmark', true);
@@ -79,26 +81,28 @@ function renderApp(context) {
 
 			if (!filePaths) return;
 
-			createBookmark(filePaths.at(0));
+			const filePathData = getBookmarkDataFromFilePath(filePaths.at(0));
+
+			createBookmark(filePathData);
 			renderApp(context);
 		},
 	});
 
 	const separatorMenuItem = { type: 'separator' };
 
-	const bookmarkMenuItems = getBookmarks().map(({ basename, path, id }) => ({
-		label: basename,
+	const bookmarkMenuItems = getBookmarks().map((bookmarkData) => ({
+		label: getBasenameFromBookmarkData(bookmarkData),
 		submenu: [
 			{
 				label: 'Open',
 				click: () => {
-					spawn('code', [path], { shell: true });
+					openBookmarkIntoVsCode(bookmarkData);
 				},
 			},
 			{
 				label: 'Remove',
 				click: () => {
-					deleteBookmark(id);
+					deleteBookmark(bookmarkData.id);
 					renderApp(context);
 				},
 			},
@@ -125,4 +129,25 @@ function renderApp(context) {
 	]);
 
 	tray.setContextMenu(contextMenu);
+}
+
+function getBookmarkDataFromFilePath(filePath) {
+	if (filePathIsFromWsl(filePath)) return wslBookmarkDataAdapter(filePath);
+
+	return { filePath };
+}
+
+function getBasenameFromBookmarkData(bookmarkData) {
+	if (bookmarkData.wsl) return `[WSL] ${bookmarkData.basename}`;
+
+	return bookmarkData.basename;
+}
+
+function openBookmarkIntoVsCode(bookmarkData) {
+	if (bookmarkData.wsl) {
+		openIntoVsCode(bookmarkData.path, ['--folder-uri']);
+		return;
+	}
+
+	openIntoVsCode(bookmarkData.path);
 }
