@@ -12,7 +12,7 @@ VSCode Bookmark
 ![GitHub License](https://img.shields.io/github/license/ailtonloures/vscode-bookmark)
 </h1>
 
-<p>A utility to save your favorite projects and open them easily in vscode.</p>
+<p>A utility to save your favorite projects and files to open them easily on Visual Studio Code.</p>
 
 </div>
 
@@ -32,9 +32,12 @@ VSCode Bookmark
 
 ## Features
 
-- Save projects path on Store;
-- Open projects in VSCode;
-- Logs and Monitoring with Sentry;
+- Save projects and files to open in vscode;
+  - by drag and drop;
+  - by file's browser;
+- WSL Integration (Windows);
+  - by drag and drop;
+  - projects (directories) only;
 
 ## Development
 

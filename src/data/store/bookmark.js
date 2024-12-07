@@ -4,17 +4,16 @@ import store from './store';
 
 const storeName = 'bookmarks';
 
-function createBookmark(filePath) {
+function createBookmark({ filePath, wsl = false }) {
 	const bookmarkList = getBookmarks();
+	const bookmarkData = {
+		path: filePath,
+		basename: basename(filePath),
+		id: new Date().getTime(),
+		wsl,
+	};
 
-	store.set(storeName, [
-		{
-			path: filePath,
-			basename: basename(filePath),
-			id: new Date().getTime(),
-		},
-		...bookmarkList,
-	]);
+	store.set(storeName, [bookmarkData, ...bookmarkList]);
 }
 
 function getBookmarks(limit = 10) {
@@ -22,7 +21,7 @@ function getBookmarks(limit = 10) {
 	return bookmarkList.slice(0, limit);
 }
 
-function deleteBookmark(id) {
+function deleteBookmarkById(id) {
 	const bookmarkList = getBookmarks();
 
 	store.set(
@@ -31,4 +30,4 @@ function deleteBookmark(id) {
 	);
 }
 
-export { createBookmark, deleteBookmark, getBookmarks };
+export { createBookmark, deleteBookmarkById, getBookmarks };

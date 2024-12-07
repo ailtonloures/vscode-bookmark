@@ -1,6 +1,6 @@
+const { FuseV1Options, FuseVersion } = require('@electron/fuses');
 const { FusesPlugin } = require('@electron-forge/plugin-fuses');
 const { VitePlugin } = require('@electron-forge/plugin-vite');
-const { FuseV1Options, FuseVersion } = require('@electron/fuses');
 
 const {
 	name: projectName,
