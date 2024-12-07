@@ -3,14 +3,14 @@ import { app, ipcMain } from 'electron';
 
 import { makeAppToInitOnASingleInstance } from './core/setup';
 import { openIntoVsCode } from './core/vscode';
-import { filePathIsFromWsl, wslBookmarkDataAdapter } from './core/wsl';
+import { isFilePathFromWsl, wslBookmarkDataAdapter } from './core/wsl';
 import {
 	createBookmark,
-	deleteBookmark,
+	deleteBookmarkById,
 	getBookmarks,
 } from './data/store/bookmark';
 import { createMenu, createTray, createWindow } from './electron';
-import { openDialog } from './electron/utils';
+import { isWindows, openDialog } from './electron/utils';
 
 Sentry.init({
 	dsn: 'https://713782327975276ae010040b1db6ab8a@o4507887084503040.ingest.us.sentry.io/4507887098724352',
@@ -41,9 +41,9 @@ function createAppContext() {
 
 function registerIpcMainEvents(context) {
 	ipcMain.on('create-bookmark', (event, filePath) => {
-		const filePathData = getBookmarkDataFromFilePath(filePath);
+		const bookmarkData = getBookmarkDataFromFilePath(filePath);
 
-		createBookmark(filePathData);
+		createBookmark(bookmarkData);
 		renderApp(context);
 
 		event.reply('create-bookmark', true);
@@ -102,7 +102,9 @@ function renderApp(context) {
 			{
 				label: 'Remove',
 				click: () => {
-					deleteBookmark(bookmarkData.id);
+					const { id } = bookmarkData;
+
+					deleteBookmarkById(id);
 					renderApp(context);
 				},
 			},
@@ -132,7 +134,8 @@ function renderApp(context) {
 }
 
 function getBookmarkDataFromFilePath(filePath) {
-	if (filePathIsFromWsl(filePath)) return wslBookmarkDataAdapter(filePath);
+	if (isWindows() && isFilePathFromWsl(filePath))
+		return wslBookmarkDataAdapter(filePath);
 
 	return { filePath };
 }

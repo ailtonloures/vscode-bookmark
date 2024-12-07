@@ -10,8 +10,8 @@ function wslBookmarkDataAdapter(path) {
 	};
 }
 
-function filePathIsFromWsl(path) {
-	return String(path).includes('wsl');
+function isFilePathFromWsl(path) {
+	return String(path).startsWith('\\\\wsl');
 }
 
-export { wslBookmarkDataAdapter, filePathIsFromWsl };
+export { wslBookmarkDataAdapter, isFilePathFromWsl };
