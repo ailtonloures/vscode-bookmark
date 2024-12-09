@@ -16,9 +16,8 @@ function createBookmark({ filePath, wsl = false }) {
 	store.set(storeName, [bookmarkData, ...bookmarkList]);
 }
 
-function getBookmarks(limit = 10) {
-	const bookmarkList = store.get(storeName) || [];
-	return bookmarkList.slice(0, limit);
+function getBookmarks() {
+	return store.get(storeName) || [];
 }
 
 function deleteBookmarkById(id) {
