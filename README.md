@@ -38,6 +38,7 @@ VSCode Bookmark
 - WSL Integration (Windows);
   - by drag and drop;
   - projects (directories) only;
+- Open bookmarks config to edit order and basename;
 
 ## Development
 

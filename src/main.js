@@ -4,6 +4,7 @@ import { app, ipcMain } from 'electron';
 import { makeAppToInitOnASingleInstance } from './core/setup';
 import { openIntoVsCode } from './core/vscode';
 import { isFilePathFromWsl, wslBookmarkDataAdapter } from './core/wsl';
+import store from './data/store';
 import {
 	createBookmark,
 	deleteBookmarkById,
@@ -111,6 +112,13 @@ function renderApp(context) {
 		],
 	}));
 
+	const openConfigMenuItem = {
+		label: 'Open config',
+		click: () => {
+			openIntoVsCode(store.path);
+		},
+	};
+
 	const exitMenuItem = {
 		label: 'Quit',
 		click: () => {
@@ -127,6 +135,7 @@ function renderApp(context) {
 		separatorMenuItem,
 		...bookmarkMenuItems,
 		separatorMenuItem,
+		openConfigMenuItem,
 		exitMenuItem,
 	]);
 

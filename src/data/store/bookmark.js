@@ -1,6 +1,6 @@
 import { basename } from 'node:path';
 
-import store from './store';
+import store from '.';
 
 const storeName = 'bookmarks';
 
@@ -22,11 +22,9 @@ function getBookmarks() {
 
 function deleteBookmarkById(id) {
 	const bookmarkList = getBookmarks();
+	const filteredBookmarkList = bookmarkList.filter((item) => item.id !== id);
 
-	store.set(
-		storeName,
-		bookmarkList.filter((item) => item.id !== id)
-	);
+	store.set(storeName, filteredBookmarkList);
 }
 
 export { createBookmark, deleteBookmarkById, getBookmarks };
