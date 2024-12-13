@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/electron';
 import { app, ipcMain } from 'electron';
 
+import { isFile } from './core/file-system';
 import { makeAppToInitOnASingleInstance } from './core/setup';
 import { openIntoVsCode } from './core/vscode';
 import { isFilePathFromWsl, wslBookmarkDataAdapter } from './core/wsl';
@@ -42,12 +43,17 @@ function createAppContext() {
 
 function registerIpcMainEvents(context) {
 	ipcMain.on('create-bookmark', (event, filePath) => {
-		const bookmarkData = getBookmarkDataFromFilePath(filePath);
+		const bookmarkData = getBookmarkDataFromFilePath(context, filePath);
+
+		if (!bookmarkData) {
+			event.reply('create-bookmark', 'ERROR');
+			return;
+		}
 
 		createBookmark(bookmarkData);
 		renderApp(context);
 
-		event.reply('create-bookmark', true);
+		event.reply('create-bookmark', 'OK');
 	});
 }
 
@@ -142,9 +148,20 @@ function renderApp(context) {
 	tray.setContextMenu(contextMenu);
 }
 
-function getBookmarkDataFromFilePath(filePath) {
-	if (isWindows() && isFilePathFromWsl(filePath))
-		return wslBookmarkDataAdapter(filePath);
+function getBookmarkDataFromFilePath(context, filePath) {
+	const { tray } = context;
+
+	if (isWindows() && isFilePathFromWsl(filePath)) {
+		if (!isFile(filePath)) return wslBookmarkDataAdapter(filePath);
+
+		tray.displayBalloon({
+			iconType: 'warning',
+			title: 'Unsupported WSL path',
+			content: 'You can only save folders from WSL',
+		});
+
+		return null;
+	}
 
 	return { filePath };
 }

@@ -52,5 +52,9 @@ body {
 }
 
 .success {
-	color: #2ab347;
+	color: #28a745;
+}
+
+.danger {
+	color: #dc3545;
 }

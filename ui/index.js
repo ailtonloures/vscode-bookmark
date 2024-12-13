@@ -11,7 +11,8 @@ const globalState = {
 		initial: 'Drag and drop your files or projects here.',
 		drop: 'Drop...',
 		wait: 'Wait...',
-		success: 'Success!',
+		success: 'Done!',
+		wrong: 'Wrong!',
 	},
 };
 // Elements
@@ -36,10 +37,14 @@ function onDrop(event) {
 	ipc.toMain(ipcChannels.CREATE_BOOKMARK, filePath);
 }
 
-function onCreatedBookmark(success) {
-	if (success) {
+function onCreatedBookmark(_, status) {
+	if (status === 'OK') {
 		setDropAreaDivText(
 			`<span class="success">${globalState.dropAreaDiv.success}</span>`
+		);
+	} else {
+		setDropAreaDivText(
+			`<span class="danger">${globalState.dropAreaDiv.wrong}</span>`
 		);
 	}
 
