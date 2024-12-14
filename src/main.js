@@ -2,9 +2,10 @@ import * as Sentry from '@sentry/electron';
 import { app, ipcMain } from 'electron';
 
 import { isFile } from './core/file-system';
+import { isWindows } from './core/platform';
 import { makeAppToInitOnASingleInstance } from './core/setup';
 import { openIntoVsCode } from './core/vscode';
-import { isFilePathFromWsl, wslBookmarkDataAdapter } from './core/wsl';
+import { isPathFromWsl, wslBookmarkDataAdapter } from './core/wsl';
 import store from './data/store';
 import {
 	createBookmark,
@@ -12,7 +13,7 @@ import {
 	getBookmarks,
 } from './data/store/bookmark';
 import { createMenu, createTray, createWindow } from './electron';
-import { isWindows, openDialog } from './electron/utils';
+import { openDialog } from './electron/utils';
 
 Sentry.init({
 	dsn: 'https://713782327975276ae010040b1db6ab8a@o4507887084503040.ingest.us.sentry.io/4507887098724352',
@@ -151,16 +152,18 @@ function renderApp(context) {
 function getBookmarkDataFromFilePath(context, filePath) {
 	const { tray } = context;
 
-	if (isWindows() && isFilePathFromWsl(filePath)) {
-		if (!isFile(filePath)) return wslBookmarkDataAdapter(filePath);
+	if (isWindows() && isPathFromWsl(filePath)) {
+		if (isFile(filePath)) {
+			tray.displayBalloon({
+				iconType: 'warning',
+				title: 'Unsupported WSL path',
+				content: 'You can only save folders from WSL',
+			});
 
-		tray.displayBalloon({
-			iconType: 'warning',
-			title: 'Unsupported WSL path',
-			content: 'You can only save folders from WSL',
-		});
+			return null;
+		}
 
-		return null;
+		return wslBookmarkDataAdapter(filePath);
 	}
 
 	return { filePath };

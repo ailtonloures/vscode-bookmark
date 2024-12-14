@@ -10,8 +10,8 @@ function wslBookmarkDataAdapter(path) {
 	};
 }
 
-function isFilePathFromWsl(path) {
+function isPathFromWsl(path) {
 	return String(path).startsWith('\\\\wsl');
 }
 
-export { wslBookmarkDataAdapter, isFilePathFromWsl };
+export { wslBookmarkDataAdapter, isPathFromWsl };
