@@ -89,7 +89,12 @@ function renderApp(context) {
 
 			if (!filePaths) return;
 
-			const filePathData = getBookmarkDataFromFilePath(filePaths.at(0));
+			const filePathData = getBookmarkDataFromFilePath(
+				context,
+				filePaths.at(0)
+			);
+
+			if (!filePathData) return;
 
 			createBookmark(filePathData);
 			renderApp(context);
