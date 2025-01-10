@@ -39,6 +39,7 @@ VSCode Bookmark
   - by drag and drop;
   - projects (folders) only;
 - Open bookmarks config to edit order and basename;
+- Auto update;
 
 ## Development
 
@@ -91,6 +92,7 @@ This software uses the following open source packages:
 - [Sentry](https://sentry.io/)
 - [Vite](https://vite.dev/)
 - [Husky](https://github.com/typicode/husky)
+- [Update Electron App](https://github.com/electron/update-electron-app)
 
 ## Contributing
 

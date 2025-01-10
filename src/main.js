@@ -1,6 +1,10 @@
 import * as Sentry from '@sentry/electron';
 import { app, ipcMain } from 'electron';
 
+import './core/auto-update';
+
+import { createMenu, createTray, createWindow } from './components';
+import { openDialog } from './components/utils';
 import { isFile } from './core/file-system';
 import { isWindows } from './core/platform';
 import { makeAppToInitOnASingleInstance } from './core/setup';
@@ -12,8 +16,6 @@ import {
 	deleteBookmarkById,
 	getBookmarks,
 } from './data/store/bookmark';
-import { createMenu, createTray, createWindow } from './electron';
-import { openDialog } from './electron/utils';
 
 Sentry.init({
 	dsn: 'https://713782327975276ae010040b1db6ab8a@o4507887084503040.ingest.us.sentry.io/4507887098724352',
