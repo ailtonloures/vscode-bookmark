@@ -74,16 +74,7 @@ function registerAppEvents(context) {
 function renderApp(context) {
 	const { tray, win } = context;
 
-	const dragAndDropMenuItem = {
-		label: 'Add by drag and drop',
-		type: 'normal',
-		click: async () => {
-			win.show();
-			win.focus();
-		},
-	};
-
-	const searchMenuItem = (label, dialogProperties) => ({
+	const addItemMenu = (label, dialogProperties) => ({
 		label,
 		type: 'normal',
 		click: async () => {
@@ -103,9 +94,7 @@ function renderApp(context) {
 		},
 	});
 
-	const separatorMenuItem = { type: 'separator' };
-
-	const bookmarkMenuItems = getBookmarks().map((bookmarkData) => ({
+	const bookmarkItemsMenu = getBookmarks().map((bookmarkData) => ({
 		label: getBasenameFromBookmarkData(bookmarkData),
 		submenu: [
 			{
@@ -126,31 +115,34 @@ function renderApp(context) {
 		],
 	}));
 
-	const openConfigMenuItem = {
-		label: 'Open config',
-		click: () => {
-			openIntoVsCode(store.path);
-		},
-	};
-
-	const exitMenuItem = {
-		label: 'Quit',
-		click: () => {
-			win.removeAllListeners('close');
-			win.close();
-			app.quit();
-		},
-	};
-
 	const contextMenu = createMenu([
-		dragAndDropMenuItem,
-		searchMenuItem('Search project', ['openDirectory']),
-		searchMenuItem('Search file', ['openFile']),
-		separatorMenuItem,
-		...bookmarkMenuItems,
-		separatorMenuItem,
-		openConfigMenuItem,
-		exitMenuItem,
+		{
+			label: 'Add project by drag and drop',
+			type: 'normal',
+			click: async () => {
+				win.show();
+				win.focus();
+			},
+		},
+		addItemMenu('Add project', ['openDirectory']),
+		addItemMenu('Add file', ['openFile']),
+		{ type: 'separator' },
+		...bookmarkItemsMenu,
+		{ type: 'separator' },
+		{
+			label: 'Settings',
+			click: () => {
+				openIntoVsCode(store.path);
+			},
+		},
+		{
+			label: 'Quit',
+			click: () => {
+				win.removeAllListeners('close');
+				win.close();
+				app.quit();
+			},
+		},
 	]);
 
 	tray.setContextMenu(contextMenu);
