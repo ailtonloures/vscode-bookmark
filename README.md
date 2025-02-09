@@ -6,7 +6,6 @@
 <br/>
 VSCode Bookmark
 
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/ailtonloures/vscode-bookmark/total)
 ![GitHub Release](https://img.shields.io/github/v/release/ailtonloures/vscode-bookmark)
 ![GitHub License](https://img.shields.io/github/license/ailtonloures/vscode-bookmark)
 </h1>
