@@ -34,7 +34,7 @@ makeAppToInitOnASingleInstance(async () => {
 
 	registerIpcMainEvents(context);
 	registerAppEvents(context);
-	renderApp(context);
+	createAppMenu(context);
 });
 
 function createAppContext() {
@@ -54,7 +54,7 @@ function registerIpcMainEvents(context) {
 		}
 
 		createBookmark(bookmarkData);
-		renderApp(context);
+		createAppMenu(context);
 
 		event.reply('create-bookmark', 'OK');
 	});
@@ -71,7 +71,7 @@ function registerAppEvents(context) {
 	});
 }
 
-function renderApp(context) {
+function createAppMenu(context) {
 	const { tray, win } = context;
 
 	const addItemMenu = (label, dialogProperties) => ({
@@ -82,15 +82,15 @@ function renderApp(context) {
 
 			if (!filePaths) return;
 
-			const filePathData = getBookmarkDataFromFilePath(
+			const bookmarkData = getBookmarkDataFromFilePath(
 				context,
 				filePaths.at(0)
 			);
 
-			if (!filePathData) return;
+			if (!bookmarkData) return;
 
-			createBookmark(filePathData);
-			renderApp(context);
+			createBookmark(bookmarkData);
+			createAppMenu(context);
 		},
 	});
 
@@ -109,7 +109,7 @@ function renderApp(context) {
 					const { id } = bookmarkData;
 
 					deleteBookmarkById(id);
-					renderApp(context);
+					createAppMenu(context);
 				},
 			},
 		],
