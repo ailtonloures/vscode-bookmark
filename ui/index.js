@@ -2,12 +2,12 @@
 const { ipc, web } = window.electronAPI;
 // IPC Channels
 const ipcChannels = {
-	CREATE_BOOKMARK: 'create-bookmark',
+	SAVE_BOOKMARK: 'save-bookmark',
 };
 // Global state
 const globalState = {
-	sendingFile: false,
-	dropAreaDiv: {
+	isSendingFile: false,
+	dropAreaDivText: {
 		initial: 'Drag and drop your files or projects here.',
 		drop: 'Drop...',
 		wait: 'Wait...',
@@ -19,7 +19,7 @@ const globalState = {
 const dropAreaDiv = document.querySelector('#drop-area');
 
 function onInit() {
-	setDropAreaDivText(globalState.dropAreaDiv.initial);
+	setDropAreaDivText(globalState.dropAreaDivText.initial);
 }
 
 function onDrop(event) {
@@ -29,28 +29,30 @@ function onDrop(event) {
 	}
 
 	setSendingFileState(true);
-	setDropAreaDivText(globalState.dropAreaDiv.wait);
+	setDropAreaDivText(globalState.dropAreaDivText.wait);
 
 	const file = event.dataTransfer.files[0];
-	const filePath = web.getPathForFile(file);
+	const path = web.getPathForFile(file);
 
-	ipc.toMain(ipcChannels.CREATE_BOOKMARK, filePath);
+	ipc.toMain(ipcChannels.SAVE_BOOKMARK, path);
 }
 
 function onCreatedBookmark(_, status) {
+	const { dropAreaDivText } = globalState;
+
 	if (status === 'OK') {
 		setDropAreaDivText(
-			`<span class="success">${globalState.dropAreaDiv.success}</span>`
+			`<span class="success">${dropAreaDivText.success}</span>`
 		);
 	} else {
 		setDropAreaDivText(
-			`<span class="danger">${globalState.dropAreaDiv.wrong}</span>`
+			`<span class="danger">${dropAreaDivText.wrong}</span>`
 		);
 	}
 
 	setTimeout(() => {
 		setSendingFileState(false);
-		setDropAreaDivText(globalState.dropAreaDiv.initial);
+		setDropAreaDivText(dropAreaDivText.initial);
 	}, 1500);
 }
 
@@ -61,7 +63,7 @@ function onDropOrLeave(event) {
 	}
 
 	dropAreaDiv.classList.remove('hover');
-	setDropAreaDivText(globalState.dropAreaDiv.initial);
+	setDropAreaDivText(globalState.dropAreaDivText.initial);
 }
 
 function onEnterOrOver(event) {
@@ -71,15 +73,15 @@ function onEnterOrOver(event) {
 	}
 
 	dropAreaDiv.classList.add('hover');
-	setDropAreaDivText(globalState.dropAreaDiv.drop);
+	setDropAreaDivText(globalState.dropAreaDivText.drop);
 }
 
 function isSendingFile() {
-	return globalState.sendingFile;
+	return globalState.isSendingFile;
 }
 
 function setSendingFileState(sending) {
-	globalState.sendingFile = sending;
+	globalState.isSendingFile = sending;
 }
 
 function setDropAreaDivText(value) {
@@ -104,7 +106,7 @@ function registerDOMEvents() {
 }
 
 function registerIpcRendererEvents() {
-	ipc.onRenderer(ipcChannels.CREATE_BOOKMARK, onCreatedBookmark);
+	ipc.onRenderer(ipcChannels.SAVE_BOOKMARK, onCreatedBookmark);
 }
 
 registerDOMEvents();

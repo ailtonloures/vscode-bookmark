@@ -18,6 +18,7 @@ export default [
 	importPlugin.flatConfigs.recommended,
 	{
 		rules: {
+			// import
 			'import/no-unresolved': 'error',
 			'import/order': [
 				'error',

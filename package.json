@@ -2,7 +2,7 @@
 	"name": "vscode-bookmark",
 	"productName": "VSCode Bookmark",
 	"description": "A utility to save your favorite projects and open them easily in vscode.",
-	"version": "1.5.3",
+	"version": "2.0.0-beta",
 	"author": "Ailton Loures",
 	"homepage": "https://github.com/ailtonloures/vscode-bookmark#readme",
 	"repository": {
@@ -26,13 +26,11 @@
 	"license": "MIT",
 	"main": ".vite/build/main.js",
 	"scripts": {
+		"prepare": "husky",
 		"start": "electron-forge start --enable-logging",
-		"make:icons": "electron-icon-maker --input=./assets/icons/icon.png --output=./assets",
-		"lint": "prettier --write . && eslint --fix",
 		"package": "electron-forge package",
 		"make": "electron-forge make",
-		"publish": "electron-forge publish",
-		"prepare": "husky"
+		"publish": "electron-forge publish"
 	},
 	"dependencies": {
 		"@sentry/electron": "^5.4.0",
@@ -52,8 +50,8 @@
 		"@electron-forge/publisher-github": "^7.6.0",
 		"@electron/fuses": "^1.8.0",
 		"@eslint/js": "^9.9.1",
+		"@types/eslint__js": "^8.42.3",
 		"electron": "32.3.0",
-		"electron-icon-maker": "^0.0.5",
 		"eslint": "^9.9.1",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-import": "^2.31.0",

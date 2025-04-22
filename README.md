@@ -14,30 +14,24 @@ VSCode Bookmark
 
 </div>
 
-## Support for
-
-![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
-![Fedora](https://img.shields.io/badge/Fedora-294172?style=for-the-badge&logo=fedora&logoColor=white)
-![Debian](https://img.shields.io/badge/Debian-D70A53?style=for-the-badge&logo=debian&logoColor=white)
-![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
-![macOS](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=macos&logoColor=F0F0F0)
-
-### Releases
-
-[Go to latest](https://github.com/ailtonloures/vscode-bookmark/releases/latest)
-
-[View other releases...](https://github.com/ailtonloures/vscode-bookmark/releases)
-
 ## Features
 
 - Save projects and files to open in vscode;
-  - by drag and drop;
-  - by file's browser;
+  - add by drag and drop;
+  - add by file's browser;
 - WSL Integration (Windows);
-  - by drag and drop;
-  - projects (folders) only;
+  - add by drag and drop;
+  - add projects (folders) only;
 - Open bookmarks config to edit order and basename;
 - Auto update;
+
+## Downloads
+
+- [Windows](https://github.com/ailtonloures/vscode-bookmark/releases/download/v2.0.0/VSCode.Bookmark-2.0.0.Setup.exe)
+- [MacOs](https://github.com/ailtonloures/vscode-bookmark/releases/download/v2.0.0/VSCode.Bookmark-darwin-arm64-2.0.0.zip)
+- [Linux](https://github.com/ailtonloures/vscode-bookmark/releases/download/v2.0.0/vscode-bookmark_2.0.0_amd64.deb)
+
+[View all platforms...](https://github.com/ailtonloures/vscode-bookmark/releases/latest)
 
 ## Development
 
