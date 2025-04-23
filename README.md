@@ -17,11 +17,9 @@ VSCode Bookmark
 ## Features
 
 - Save projects and files to open in vscode;
+  - WSL integration;
   - add by drag and drop;
   - add by file's browser;
-- WSL Integration (Windows);
-  - add by drag and drop;
-  - add projects (folders) only;
 - Open bookmarks config to edit order and basename;
 - Auto update;
 

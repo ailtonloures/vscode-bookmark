@@ -117,11 +117,6 @@ function registerIpcMainEvents(context) {
 	ipcMain.on('save-bookmark', (event, path) => {
 		const bookmark = createBookmark(path);
 
-		if (!bookmark) {
-			event.reply('save-bookmark', 'ERROR');
-			return;
-		}
-
 		saveBookmark(bookmark);
 		renderContextMenu(context);
 
@@ -171,8 +166,6 @@ function renderContextMenu(context) {
 
 			const bookmark = createBookmark(path);
 
-			if (!bookmark) return;
-
 			saveBookmark(bookmark);
 			renderContextMenu(context);
 		},
@@ -189,7 +182,12 @@ function renderContextMenu(context) {
 				label: 'Open',
 				click: () => {
 					if (bookmark.wsl) {
-						openVsCode(bookmark.path, ['--folder-uri']);
+						if (statSync(bookmark.path).isFile()) {
+							openVsCode(bookmark.path, ['--file-uri']);
+						} else {
+							openVsCode(bookmark.path, ['--folder-uri']);
+						}
+
 						return;
 					}
 
@@ -414,9 +412,9 @@ function openVsCode(path, args = []) {
 }
 
 /**
- * Creates the bookmark data from the file path and adapts the path to a remote path in cases of WSL origin
+ * Creates the bookmark object from the file path and adapts the path to a remote path in cases of WSL origin
  * @param {string} path
- * @returns {Pick<Bookmark, 'path' | 'wsl'> | null}
+ * @returns {Pick<Bookmark, 'path' | 'wsl'>}
  */
 function createBookmark(path) {
 	/**
@@ -427,8 +425,6 @@ function createBookmark(path) {
 	const isWslPath = (path) => path.startsWith('\\\\wsl');
 
 	if (platform.isWindows() && isWslPath(path)) {
-		if (statSync(path).isFile()) return null;
-
 		const getWslPath = (path) => {
 			const sanitizedPath = path
 				.replaceAll('\\', '/')
