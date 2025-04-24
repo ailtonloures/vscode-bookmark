@@ -20,49 +20,13 @@ Sentry.init({
 	dsn: 'https://713782327975276ae010040b1db6ab8a@o4507887084503040.ingest.us.sentry.io/4507887098724352',
 });
 
-updateElectronApp({
-	updateSource: {
-		host: 'https://update.electronjs.org',
-		type: UpdateSourceType.ElectronPublicUpdateService,
-		repo: 'ailtonloures/vscode-bookmark',
-	},
-});
-
-/**
- * Platform config
- */
-const platform = {
-	/**
-	 * Check that the current platform running is Windows
-	 * @returns {boolean}
-	 */
-	isWindows: () => process.platform === 'win32',
-};
-
-makeApp(async () => {
-	if (app.isPackaged) {
-		app.setLoginItemSettings({
-			openAtLogin: true,
-		});
-	}
-
-	await app.whenReady();
-
-	const context = createAppContext();
-
-	registerIpcMainEvents(context);
-	registerAppEvents(context);
-
-	renderContextMenu(context);
-});
-
 /**
  * Types
  *
  * @typedef AppContext
  * @type {object}
- * @property {Electron.Tray} tray
- * @property {Electron.BrowserWindow} win
+ * @property {Tray} tray
+ * @property {BrowserWindow} win
  * @property {Store} store
  *
  * @typedef Store
@@ -79,6 +43,31 @@ makeApp(async () => {
  * @property {string} basename
  * @property {boolean} wsl
  */
+
+makeApp(async () => {
+	if (app.isPackaged) {
+		app.setLoginItemSettings({
+			openAtLogin: true,
+		});
+
+		updateElectronApp({
+			updateSource: {
+				host: 'https://update.electronjs.org',
+				type: UpdateSourceType.ElectronPublicUpdateService,
+				repo: 'ailtonloures/vscode-bookmark',
+			},
+		});
+	}
+
+	await app.whenReady();
+
+	const context = createAppContext();
+
+	registerIpcMainEvents(context);
+	registerAppEvents(context);
+
+	renderContextMenu(context);
+});
 
 /**
  * Create an App on a single instance
@@ -153,8 +142,8 @@ function renderContextMenu(context) {
 	/**
 	 * Create the menu item to add bookmarks
 	 * @param {string} label
-	 * @param {Electron.OpenDialogOptions['properties']} dialogProperties
-	 * @returns {Electron.MenuItem}
+	 * @param {OpenDialogOptions['properties']} dialogProperties
+	 * @returns {MenuItem}
 	 */
 	const bookmarkAddMenuItem = (label, dialogProperties) => ({
 		label,
@@ -173,7 +162,7 @@ function renderContextMenu(context) {
 
 	/**
 	 * A list of menu items from bookmarks
-	 * @type {Array<Electron.MenuItem>}
+	 * @type {Array<MenuItem>}
 	 */
 	const bookmarkListMenuItem = getBookmarks().map((bookmark) => ({
 		label: bookmark.wsl ? `[WSL] ${bookmark.basename}` : bookmark.basename,
@@ -305,7 +294,7 @@ function createStore() {
 
 /**
  * Create and configure a Electron Tray object
- * @returns {Electron.Tray}
+ * @returns {Tray}
  */
 function createTray() {
 	const icon = getIcon('tray-icon.png');
@@ -319,7 +308,7 @@ function createTray() {
 
 /**
  * Create and configure a Electron Window object
- * @returns {Electron.BrowserWindow}
+ * @returns {BrowserWindow}
  */
 function createWindow() {
 	const win = new BrowserWindow({
@@ -359,8 +348,8 @@ function createWindow() {
 
 /**
  * Create a Electron Menu object from menu items template
- * @param {Array<Electron.MenuItem>} menuItems
- * @returns {Electron.Menu}
+ * @param {Array<MenuItem>} menuItems
+ * @returns {Menu}
  */
 function createMenu(menuItems = []) {
 	return Menu.buildFromTemplate(menuItems);
@@ -387,7 +376,7 @@ function getIcon(iconName) {
 
 /**
  * Show dialog to select file or directory and return the file path
- * @param {Electron.OpenDialogOptions['properties']} properties
+ * @param {OpenDialogOptions['properties']} properties
  * @returns {Promise<string> | null}
  */
 async function openDialog(properties) {
@@ -424,7 +413,12 @@ function createBookmark(path) {
 	 */
 	const isWslPath = (path) => path.startsWith('\\\\wsl');
 
-	if (platform.isWindows() && isWslPath(path)) {
+	if (isWslPath(path)) {
+		/**
+		 * Sanitize and format the WSL path to open correctly in Visual Studio Code
+		 * @param {string} path
+		 * @returns {string}
+		 */
 		const getWslPath = (path) => {
 			const sanitizedPath = path
 				.replaceAll('\\', '/')
