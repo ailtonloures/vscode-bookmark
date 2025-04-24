@@ -12,9 +12,13 @@ import {
 	BrowserWindow,
 	Menu,
 } from 'electron';
-import squirrelStartup from 'electron-squirrel-startup';
+import electronSquirrelStartup from 'electron-squirrel-startup';
 import ElectronStore from 'electron-store';
-import { updateElectronApp, UpdateSourceType } from 'update-electron-app';
+import {
+	updateElectronApp,
+	makeUserNotifier,
+	UpdateSourceType,
+} from 'update-electron-app';
 
 Sentry.init({
 	dsn: 'https://713782327975276ae010040b1db6ab8a@o4507887084503040.ingest.us.sentry.io/4507887098724352',
@@ -22,10 +26,13 @@ Sentry.init({
 
 updateElectronApp({
 	updateSource: {
-		host: 'https://update.electronjs.org',
 		type: UpdateSourceType.ElectronPublicUpdateService,
+		host: 'https://update.electronjs.org',
 		repo: 'ailtonloures/vscode-bookmark',
 	},
+	onNotifyUser: makeUserNotifier({
+		title: 'VSCode Bookmark Update',
+	}),
 });
 
 /**
@@ -75,7 +82,7 @@ makeApp(async () => {
  */
 function makeApp(fn) {
 	const hasSecondInstance = !app.requestSingleInstanceLock();
-	const hasSquirrelInstance = squirrelStartup;
+	const hasSquirrelInstance = electronSquirrelStartup;
 
 	if (hasSecondInstance || hasSquirrelInstance) app.quit();
 
@@ -172,11 +179,11 @@ function renderContextMenu(context) {
 				click: () => {
 					if (bookmark.wsl) {
 						if (statSync(bookmark.path).isFile()) {
-							openVsCode(bookmark.path, ['--file-uri']);
-						} else {
-							openVsCode(bookmark.path, ['--folder-uri']);
+							openVsCode(bookmark.wsl.remotePath, ['--file-uri']);
+							return;
 						}
 
+						openVsCode(bookmark.wsl.remotePath, ['--folder-uri']);
 						return;
 					}
 
@@ -250,7 +257,7 @@ function createStore() {
 
 	/**
 	 * Save bookmark into Store
-	 * @param {Bookmark} bookmark
+	 * @param {Pick<Bookmark, 'path' | 'wsl'>} bookmark
 	 */
 	const saveBookmark = ({ path, wsl }) => {
 		store.set(storeName, [
@@ -428,10 +435,12 @@ function createBookmark(path) {
 		};
 
 		return {
-			path: getWslPath(path),
-			wsl: true,
+			path,
+			wsl: {
+				remotePath: getWslPath(path),
+			},
 		};
 	}
 
-	return { path, wsl: false };
+	return { path, wsl: null };
 }
