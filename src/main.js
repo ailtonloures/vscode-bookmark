@@ -20,6 +20,14 @@ Sentry.init({
 	dsn: 'https://713782327975276ae010040b1db6ab8a@o4507887084503040.ingest.us.sentry.io/4507887098724352',
 });
 
+updateElectronApp({
+	updateSource: {
+		host: 'https://update.electronjs.org',
+		type: UpdateSourceType.ElectronPublicUpdateService,
+		repo: 'ailtonloures/vscode-bookmark',
+	},
+});
+
 /**
  * Types
  *
@@ -48,14 +56,6 @@ makeApp(async () => {
 	if (app.isPackaged) {
 		app.setLoginItemSettings({
 			openAtLogin: true,
-		});
-
-		updateElectronApp({
-			updateSource: {
-				host: 'https://update.electronjs.org',
-				type: UpdateSourceType.ElectronPublicUpdateService,
-				repo: 'ailtonloures/vscode-bookmark',
-			},
 		});
 	}
 
