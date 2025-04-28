@@ -40,8 +40,8 @@ updateElectronApp({
  *
  * @typedef AppContext
  * @type {object}
- * @property {Tray} tray
- * @property {BrowserWindow} win
+ * @property {Electron.Tray} tray
+ * @property {Electron.BrowserWindow} win
  * @property {Store} store
  *
  * @typedef Store
@@ -149,18 +149,20 @@ function renderContextMenu(context) {
 	/**
 	 * Create the menu item to add bookmarks
 	 * @param {string} label
-	 * @param {OpenDialogOptions['properties']} dialogProperties
-	 * @returns {MenuItem}
+	 * @param {Electron.OpenDialogOptions['properties']} properties
+	 * @returns {Electron.MenuItem}
 	 */
-	const bookmarkAddMenuItem = (label, dialogProperties) => ({
+	const bookmarkAddMenuItem = (label, properties) => ({
 		label,
 		type: 'normal',
 		click: async () => {
-			const path = await openDialog(dialogProperties);
+			const { canceled, filePaths } = await dialog.showOpenDialog({
+				properties,
+			});
 
-			if (!path) return;
+			if (canceled) return;
 
-			const bookmark = createBookmark(path);
+			const bookmark = createBookmark(filePaths.at(0));
 
 			saveBookmark(bookmark);
 			renderContextMenu(context);
@@ -169,7 +171,7 @@ function renderContextMenu(context) {
 
 	/**
 	 * A list of menu items from bookmarks
-	 * @type {Array<MenuItem>}
+	 * @type {Array<Electron.MenuItem>}
 	 */
 	const bookmarkListMenuItem = getBookmarks().map((bookmark) => ({
 		label: bookmark.wsl ? `[WSL] ${bookmark.basename}` : bookmark.basename,
@@ -231,6 +233,88 @@ function renderContextMenu(context) {
 	]);
 
 	tray.setContextMenu(contextMenu);
+}
+
+/**
+ * Returns the formatted App label
+ * @returns {string}
+ */
+function getLabel() {
+	return `${app.getName()} - v${app.getVersion()}`;
+}
+
+/**
+ * Returns an App icon by iconName
+ * @param {string} iconName
+ * @returns {Electron.NativeImage}
+ */
+function getIcon(iconName) {
+	return nativeImage.createFromPath(
+		resolve(__dirname, 'icons', 'main', iconName)
+	);
+}
+
+/**
+ * Create and configure a Electron Tray object
+ * @returns {Electron.Tray}
+ */
+function createTray() {
+	const icon = getIcon('tray-icon.png');
+	const label = getLabel();
+
+	const tray = new Tray(icon);
+	tray.setToolTip(label);
+
+	return tray;
+}
+
+/**
+ * Create and configure a Electron Window object
+ * @returns {Electron.BrowserWindow}
+ */
+function createWindow() {
+	const win = new BrowserWindow({
+		width: 380,
+		height: 330,
+		show: false,
+		autoHideMenuBar: true,
+		maximizable: false,
+		resizable: false,
+		fullscreen: false,
+		fullscreenable: false,
+		focusable: true,
+		title: getLabel(),
+		icon: getIcon('win-icon.png'),
+		webPreferences: {
+			preload: resolve(__dirname, 'preload.js'),
+			contextIsolation: true,
+			sandbox: true,
+		},
+	});
+
+	// eslint-disable-next-line no-undef
+	const devURL = MAIN_WINDOW_VITE_DEV_SERVER_URL;
+
+	if (devURL) {
+		win.loadURL(devURL);
+		win.webContents.openDevTools({
+			mode: 'detach',
+			activate: true,
+		});
+	} else {
+		win.loadFile(resolve(__dirname, 'index.html'));
+	}
+
+	return win;
+}
+
+/**
+ * Create a Electron Menu object from menu items template
+ * @param {Array<Electron.MenuItem>} menuItems
+ * @returns {Electron.Menu}
+ */
+function createMenu(menuItems = []) {
+	return Menu.buildFromTemplate(menuItems);
 }
 
 /**
@@ -300,114 +384,6 @@ function createStore() {
 }
 
 /**
- * Create and configure a Electron Tray object
- * @returns {Tray}
- */
-function createTray() {
-	const icon = getIcon('tray-icon.png');
-	const label = getLabel();
-
-	const tray = new Tray(icon);
-	tray.setToolTip(label);
-
-	return tray;
-}
-
-/**
- * Create and configure a Electron Window object
- * @returns {BrowserWindow}
- */
-function createWindow() {
-	const win = new BrowserWindow({
-		width: 380,
-		height: 330,
-		show: false,
-		autoHideMenuBar: true,
-		maximizable: false,
-		resizable: false,
-		fullscreen: false,
-		fullscreenable: false,
-		focusable: true,
-		title: getLabel(),
-		icon: getIcon('win-icon.png'),
-		webPreferences: {
-			preload: resolve(__dirname, 'preload.js'),
-			contextIsolation: true,
-			sandbox: true,
-		},
-	});
-
-	// eslint-disable-next-line no-undef
-	const devURL = MAIN_WINDOW_VITE_DEV_SERVER_URL;
-
-	if (devURL) {
-		win.loadURL(devURL);
-		win.webContents.openDevTools({
-			mode: 'detach',
-			activate: true,
-		});
-	} else {
-		win.loadFile(resolve(__dirname, 'index.html'));
-	}
-
-	return win;
-}
-
-/**
- * Create a Electron Menu object from menu items template
- * @param {Array<MenuItem>} menuItems
- * @returns {Menu}
- */
-function createMenu(menuItems = []) {
-	return Menu.buildFromTemplate(menuItems);
-}
-
-/**
- * Returns the formatted App label
- * @returns {string}
- */
-function getLabel() {
-	return `${app.getName()} - v${app.getVersion()}`;
-}
-
-/**
- * Returns an App icon by iconName
- * @param {string} iconName
- * @returns {Electron.NativeImage}
- */
-function getIcon(iconName) {
-	return nativeImage.createFromPath(
-		resolve(__dirname, 'icons', 'main', iconName)
-	);
-}
-
-/**
- * Show dialog to select file or directory and return the file path
- * @param {OpenDialogOptions['properties']} properties
- * @returns {Promise<string> | null}
- */
-async function openDialog(properties) {
-	const { canceled, filePaths } = await dialog.showOpenDialog({
-		properties,
-	});
-
-	if (canceled) return null;
-
-	return filePaths.at(0);
-}
-
-/**
- * Open bookmark path into Visual Studio Code
- * @param {string} path
- * @param {Array<string>} args
- */
-function openVsCode(path, args = []) {
-	const commandArgs = [...args, `"${path}"`];
-
-	spawn('code', commandArgs, { shell: true });
-}
-
-/**
  * Creates the bookmark object from the file path and adapts the path to a remote path in cases of WSL origin
  * @param {string} path
  * @returns {Pick<Bookmark, 'path' | 'wsl'>}
@@ -443,4 +419,13 @@ function createBookmark(path) {
 	}
 
 	return { path, wsl: null };
+}
+
+/**
+ * Open bookmark path into Visual Studio Code
+ * @param {string} path
+ * @param {Array<string>} args
+ */
+function openVsCode(path, args = []) {
+	spawn('code', [...args, `"${path}"`], { shell: true });
 }
