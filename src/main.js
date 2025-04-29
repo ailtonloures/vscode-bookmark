@@ -35,6 +35,22 @@ updateElectronApp({
 	}),
 });
 
+makeApp(async () => {
+	if (app.isPackaged) {
+		app.setLoginItemSettings({
+			openAtLogin: true,
+		});
+	}
+
+	await app.whenReady();
+
+	const context = createAppContext();
+
+	registerIpcMainEvents(context);
+	registerAppEvents(context);
+	renderContextMenu(context);
+});
+
 /**
  * Types
  *
@@ -56,25 +72,12 @@ updateElectronApp({
  * @property {number} id
  * @property {string} path
  * @property {string} basename
- * @property {boolean} wsl
+ * @property {WslBookmark | null} wsl
+ *
+ * @typedef WslBookmark
+ * @type {object}
+ * @property {string} remotePath
  */
-
-makeApp(async () => {
-	if (app.isPackaged) {
-		app.setLoginItemSettings({
-			openAtLogin: true,
-		});
-	}
-
-	await app.whenReady();
-
-	const context = createAppContext();
-
-	registerIpcMainEvents(context);
-	registerAppEvents(context);
-
-	renderContextMenu(context);
-});
 
 /**
  * Create an App on a single instance
@@ -206,7 +209,7 @@ function renderContextMenu(context) {
 		{
 			label: 'Add project by drag and drop',
 			type: 'normal',
-			click: async () => {
+			click: () => {
 				win.show();
 				win.focus();
 			},

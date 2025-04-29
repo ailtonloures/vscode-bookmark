@@ -6,10 +6,12 @@ import globals from 'globals';
 
 export default [
 	{
-		files: ['src/**/*.js', 'ui/**/*.js'],
+		files: ['src/**/*.{js, mjs}', 'ui/**/*.{js, mjs}'],
 	},
 	js.configs.recommended,
-	{ languageOptions: { globals: { ...globals.node, ...globals.browser } } },
+	{
+		languageOptions: { globals: { ...globals.node, ...globals.browser } },
+	},
 	{
 		ignores: ['node_modules', '.vite'],
 	},
