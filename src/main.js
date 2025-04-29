@@ -6,6 +6,7 @@ import * as Sentry from '@sentry/electron';
 import {
 	app,
 	ipcMain,
+	autoUpdater,
 	nativeImage,
 	dialog,
 	Tray,
@@ -46,8 +47,10 @@ makeApp(async () => {
 
 	const context = createAppContext();
 
+	registerAutoUpdaterEvents(context);
 	registerIpcMainEvents(context);
 	registerAppEvents(context);
+
 	renderContextMenu(context);
 });
 
@@ -102,6 +105,20 @@ function createAppContext() {
 	const store = createStore();
 
 	return { tray, win, store };
+}
+
+/**
+ * Register the Auto Updater Events
+ * @param {AppContext} context
+ */
+function registerAutoUpdaterEvents(context) {
+	const { win, tray } = context;
+
+	autoUpdater.on('before-quit-for-update', () => {
+		win.close();
+		tray.closeContextMenu();
+		app.quit();
+	});
 }
 
 /**
