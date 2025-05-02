@@ -1,6 +1,6 @@
-import { spawn } from 'node:child_process';
-import { statSync } from 'node:fs';
-import { resolve, basename } from 'node:path';
+import process from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
 
 import * as Sentry from '@sentry/electron';
 import {
@@ -14,12 +14,13 @@ import {
 	Menu,
 } from 'electron';
 import electronSquirrelStartup from 'electron-squirrel-startup';
-import ElectronStore from 'electron-store';
 import {
 	updateElectronApp,
 	makeUserNotifier,
 	UpdateSourceType,
 } from 'update-electron-app';
+
+import { Bookmark, BookmarkStore } from './core';
 
 Sentry.init({
 	dsn: 'https://713782327975276ae010040b1db6ab8a@o4507887084503040.ingest.us.sentry.io/4507887098724352',
@@ -37,11 +38,7 @@ updateElectronApp({
 });
 
 makeApp(async () => {
-	if (app.isPackaged) {
-		app.setLoginItemSettings({
-			openAtLogin: true,
-		});
-	}
+	registerStartupConfig();
 
 	await app.whenReady();
 
@@ -50,8 +47,9 @@ makeApp(async () => {
 	registerAutoUpdaterEvents(context);
 	registerIpcMainEvents(context);
 	registerAppEvents(context);
+	registerStoreEvents(context);
 
-	renderContextMenu(context);
+	renderApp(context);
 });
 
 /**
@@ -61,25 +59,7 @@ makeApp(async () => {
  * @type {object}
  * @property {Electron.Tray} tray
  * @property {Electron.BrowserWindow} win
- * @property {Store} store
- *
- * @typedef Store
- * @type {object}
- * @property {string} path
- * @property {(bookmark: Bookmark) => void} saveBookmark
- * @property {() => Array<Bookmark>} getBookmarks
- * @property {(id: Bookmark['id']) => void} removeBookmark
- *
- * @typedef Bookmark
- * @type {object}
- * @property {number} id
- * @property {string} path
- * @property {string} basename
- * @property {WslBookmark | null} wsl
- *
- * @typedef WslBookmark
- * @type {object}
- * @property {string} remotePath
+ * @property {BookmarkStore} store
  */
 
 /**
@@ -93,6 +73,17 @@ function makeApp(fn) {
 	if (hasSecondInstance || hasSquirrelInstance) app.quit();
 
 	fn();
+}
+
+/**
+ * Register the Startup configuration
+ */
+function registerStartupConfig() {
+	if (app.isPackaged) {
+		app.setLoginItemSettings({
+			openAtLogin: true,
+		});
+	}
 }
 
 /**
@@ -112,12 +103,8 @@ function createAppContext() {
  * @param {AppContext} context
  */
 function registerAutoUpdaterEvents(context) {
-	const { win, tray } = context;
-
 	autoUpdater.on('before-quit-for-update', () => {
-		win.close();
-		tray.closeContextMenu();
-		app.quit();
+		destroyApp(context);
 	});
 }
 
@@ -126,16 +113,12 @@ function registerAutoUpdaterEvents(context) {
  * @param {AppContext} context
  */
 function registerIpcMainEvents(context) {
-	const {
-		store: { saveBookmark },
-	} = context;
+	const { store } = context;
 
 	ipcMain.on('save-bookmark', (event, path) => {
-		const bookmark = createBookmark(path);
+		const bookmark = Bookmark.create(path);
 
-		saveBookmark(bookmark);
-		renderContextMenu(context);
-
+		store.save(bookmark);
 		event.reply('save-bookmark', 'OK');
 	});
 }
@@ -156,15 +139,29 @@ function registerAppEvents(context) {
 }
 
 /**
+ * Register the Store Events
+ * @param {AppContext} context
+ */
+function registerStoreEvents(context) {
+	const { store } = context;
+
+	fs.watch(
+		store.path,
+		{
+			recursive: false,
+		},
+		() => {
+			renderApp(context);
+		}
+	);
+}
+
+/**
  * Renders a context menu in the tray app
  * @param {AppContext} context
  */
-function renderContextMenu(context) {
-	const {
-		tray,
-		win,
-		store: { path: storePath, removeBookmark, getBookmarks, saveBookmark },
-	} = context;
+function renderApp(context) {
+	const { tray, win, store } = context;
 
 	/**
 	 * Create the menu item to add bookmarks
@@ -182,10 +179,9 @@ function renderContextMenu(context) {
 
 			if (canceled) return;
 
-			const bookmark = createBookmark(filePaths.at(0));
+			const bookmark = Bookmark.create(filePaths.at(0));
 
-			saveBookmark(bookmark);
-			renderContextMenu(context);
+			store.save(bookmark);
 		},
 	});
 
@@ -193,30 +189,31 @@ function renderContextMenu(context) {
 	 * A list of menu items from bookmarks
 	 * @type {Array<Electron.MenuItem>}
 	 */
-	const bookmarkListMenuItem = getBookmarks().map((bookmark) => ({
-		label: bookmark.wsl ? `[WSL] ${bookmark.basename}` : bookmark.basename,
+	const bookmarkListMenuItem = store.get().map((bookmark) => ({
+		label: bookmark.remotePath
+			? `${bookmark.basename} (remote)`
+			: bookmark.basename,
 		submenu: [
 			{
 				label: 'Open',
 				click: () => {
-					if (bookmark.wsl) {
-						if (statSync(bookmark.path).isFile()) {
-							openVsCode(bookmark.wsl.remotePath, ['--file-uri']);
+					if (bookmark.remotePath) {
+						if (fs.statSync(bookmark.path).isFile()) {
+							openEditor(bookmark.remotePath, ['--file-uri']);
 							return;
 						}
 
-						openVsCode(bookmark.wsl.remotePath, ['--folder-uri']);
+						openEditor(bookmark.remotePath, ['--folder-uri']);
 						return;
 					}
 
-					openVsCode(bookmark.path);
+					openEditor(bookmark.path);
 				},
 			},
 			{
 				label: 'Remove',
 				click: () => {
-					removeBookmark(bookmark.id);
-					renderContextMenu(context);
+					store.remove(bookmark.id);
 				},
 			},
 		],
@@ -224,7 +221,7 @@ function renderContextMenu(context) {
 
 	const contextMenu = createMenu([
 		{
-			label: 'Add project by drag and drop',
+			label: 'Add by drag and drop',
 			type: 'normal',
 			click: () => {
 				win.show();
@@ -239,20 +236,33 @@ function renderContextMenu(context) {
 		{
 			label: 'Settings',
 			click: () => {
-				openVsCode(storePath);
+				openEditor(store.path);
 			},
 		},
 		{
 			label: 'Quit',
 			click: () => {
-				win.removeAllListeners('close');
-				win.close();
-				app.quit();
+				destroyApp(context);
 			},
 		},
 	]);
 
 	tray.setContextMenu(contextMenu);
+}
+
+/**
+ * Destroy the App and context
+ * @param {AppContext} context
+ */
+function destroyApp(context) {
+	const { tray, win } = context;
+
+	tray.closeContextMenu();
+
+	win.removeAllListeners('close');
+	win.close();
+
+	app.quit();
 }
 
 /**
@@ -270,12 +280,12 @@ function getLabel() {
  */
 function getIcon(iconName) {
 	return nativeImage.createFromPath(
-		resolve(__dirname, 'icons', 'main', iconName)
+		path.resolve(__dirname, 'icons', 'main', iconName)
 	);
 }
 
 /**
- * Create and configure a Electron Tray object
+ * Create and configure a Electron Tray
  * @returns {Electron.Tray}
  */
 function createTray() {
@@ -289,7 +299,7 @@ function createTray() {
 }
 
 /**
- * Create and configure a Electron Window object
+ * Create and configure a Electron Window
  * @returns {Electron.BrowserWindow}
  */
 function createWindow() {
@@ -306,7 +316,7 @@ function createWindow() {
 		title: getLabel(),
 		icon: getIcon('win-icon.png'),
 		webPreferences: {
-			preload: resolve(__dirname, 'preload.js'),
+			preload: path.resolve(__dirname, 'preload.js'),
 			contextIsolation: true,
 			sandbox: true,
 		},
@@ -322,14 +332,14 @@ function createWindow() {
 			activate: true,
 		});
 	} else {
-		win.loadFile(resolve(__dirname, 'index.html'));
+		win.loadFile(path.resolve(__dirname, 'index.html'));
 	}
 
 	return win;
 }
 
 /**
- * Create a Electron Menu object from menu items template
+ * Create a Electron Menu from menu items template
  * @param {Array<Electron.MenuItem>} menuItems
  * @returns {Electron.Menu}
  */
@@ -338,107 +348,11 @@ function createMenu(menuItems = []) {
 }
 
 /**
- * Create and configure the ElectronStore instance and returns store bookmark functions
- * @returns {Store}
+ * Create the BookmarkStore
+ * @returns {BookmarkStore}
  */
 function createStore() {
-	const storeName = 'bookmarks';
-	const store = new ElectronStore({
-		[storeName]: {
-			type: 'array',
-			items: {
-				type: 'object',
-				properties: {
-					id: { type: 'number' },
-					path: { type: 'string' },
-					basename: { type: 'string' },
-					wsl: { type: 'boolean' },
-				},
-				required: ['id', 'path', 'basename'],
-			},
-		},
-	});
-
-	/**
-	 * Save bookmark into Store
-	 * @param {Pick<Bookmark, 'path' | 'wsl'>} bookmark
-	 */
-	const saveBookmark = ({ path, wsl }) => {
-		store.set(storeName, [
-			{
-				id: new Date().getTime(),
-				basename: basename(path),
-				path,
-				wsl,
-			},
-			...getBookmarks(),
-		]);
-	};
-
-	/**
-	 * Fetch bookmark list from Store
-	 * @returns {Array<Bookmark>}
-	 */
-	const getBookmarks = () => {
-		return store.get(storeName) || [];
-	};
-
-	/**
-	 * Remove bookmark by id from Store
-	 * @param {Bookmark['id']} id
-	 */
-	const removeBookmark = (id) => {
-		const filteredBookmarkList = getBookmarks().filter(
-			(bookmark) => bookmark.id !== id
-		);
-
-		store.set(storeName, filteredBookmarkList);
-	};
-
-	return {
-		path: store.path,
-		saveBookmark,
-		getBookmarks,
-		removeBookmark,
-	};
-}
-
-/**
- * Creates the bookmark object from the file path and adapts the path to a remote path in cases of WSL origin
- * @param {string} path
- * @returns {Pick<Bookmark, 'path' | 'wsl'>}
- */
-function createBookmark(path) {
-	/**
-	 * Check if the path is WSL
-	 * @param {string} path
-	 * @returns {boolean}
-	 */
-	const isWslPath = (path) => path.startsWith('\\\\wsl');
-
-	if (isWslPath(path)) {
-		/**
-		 * Sanitize and format the WSL path to open correctly in Visual Studio Code
-		 * @param {string} path
-		 * @returns {string}
-		 */
-		const getWslPath = (path) => {
-			const sanitizedPath = path
-				.replaceAll('\\', '/')
-				.replace('.localhost/', '+');
-
-			return `vscode-remote:${sanitizedPath}`;
-		};
-
-		return {
-			path,
-			wsl: {
-				remotePath: getWslPath(path),
-			},
-		};
-	}
-
-	return { path, wsl: null };
+	return new BookmarkStore();
 }
 
 /**
@@ -446,6 +360,6 @@ function createBookmark(path) {
  * @param {string} path
  * @param {Array<string>} args
  */
-function openVsCode(path, args = []) {
-	spawn('code', [...args, `"${path}"`], { shell: true });
+function openEditor(path, args = []) {
+	process.spawn('code', [...args, `"${path}"`], { shell: true });
 }
