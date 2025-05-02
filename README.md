@@ -25,9 +25,9 @@ VSCode Bookmark
 
 ## Downloads
 
-- [Windows](https://github.com/ailtonloures/vscode-bookmark/releases/download/v2.0.3/VSCode.Bookmark-2.0.3.Setup.exe)
-- [MacOs](https://github.com/ailtonloures/vscode-bookmark/releases/download/v2.0.3/VSCode.Bookmark-darwin-arm64-2.0.3.zip)
-- [Linux](https://github.com/ailtonloures/vscode-bookmark/releases/download/v2.0.3/vscode-bookmark_2.0.3_amd64.deb)
+- [Windows](https://github.com/ailtonloures/vscode-bookmark/releases/download/v1.0.0/VSCode.Bookmark-1.0.0.Setup.exe)
+- [MacOs](https://github.com/ailtonloures/vscode-bookmark/releases/download/v1.0.0/VSCode.Bookmark-darwin-arm64-1.0.0.zip)
+- [Linux](https://github.com/ailtonloures/vscode-bookmark/releases/download/v1.0.0/vscode-bookmark_1.0.0_amd64.deb)
 
 [View all platforms...](https://github.com/ailtonloures/vscode-bookmark/releases/latest)
 
