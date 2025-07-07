@@ -17,17 +17,17 @@ VSCode Bookmark
 ## Features
 
 - Save projects and files to open in vscode;
-  - WSL integration;
-  - add by drag and drop;
+  - WSL integration (Windows);
+  - add by drag and drop (Windows & MacOs);
   - add by file's browser;
-- Open bookmarks config to edit order and basename;
-- Auto update;
+- Auto update (Windows & MacOs);
+- Start at login (Windows & MacOs);
 
 ## Downloads
 
-- [Windows](https://github.com/ailtonloures/vscode-bookmark/releases/download/v1.0.0/VSCode.Bookmark-1.0.0.Setup.exe)
-- [MacOs](https://github.com/ailtonloures/vscode-bookmark/releases/download/v1.0.0/VSCode.Bookmark-darwin-arm64-1.0.0.zip)
-- [Linux](https://github.com/ailtonloures/vscode-bookmark/releases/download/v1.0.0/vscode-bookmark_1.0.0_amd64.deb)
+- [Windows](https://github.com/ailtonloures/vscode-bookmark/releases/download/v1.1.0/VSCode.Bookmark-1.1.0.Setup.exe)
+- [MacOs](https://github.com/ailtonloures/vscode-bookmark/releases/download/v1.1.0/VSCode.Bookmark-darwin-arm64-1.1.0.zip)
+- [Linux](https://github.com/ailtonloures/vscode-bookmark/releases/download/v1.1.0/vscode-bookmark_1.1.0_amd64.deb)
 
 [View all platforms...](https://github.com/ailtonloures/vscode-bookmark/releases/latest)
 

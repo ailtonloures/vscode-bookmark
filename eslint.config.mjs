@@ -10,7 +10,13 @@ export default [
 	},
 	js.configs.recommended,
 	{
-		languageOptions: { globals: { ...globals.node, ...globals.browser } },
+		languageOptions: {
+			parserOptions: {
+				ecmaVersion: 2020,
+				sourceType: 'module',
+			},
+			globals: { ...globals.node, ...globals.browser },
+		},
 	},
 	{
 		ignores: ['node_modules', '.vite'],
