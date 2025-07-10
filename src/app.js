@@ -7,10 +7,23 @@ export class App {
 	 * @param {Electron} electron
 	 */
 	constructor(electron) {
-		this.electron = electron;
-		this.app = electron.app;
+		/**
+		 * @type {Electron}
+		 * @private
+		 */
+		this._electron = electron;
 
+		/**
+		 * @type {Electron.App}
+		 */
+		this.app = electron.app;
+		/**
+		 * @type {Electron.BrowserWindow|null}
+		 */
 		this.win = null;
+		/**
+		 * @type {Electron.Tray|null}
+		 */
 		this.tray = null;
 	}
 
@@ -18,8 +31,10 @@ export class App {
 	 * Create an App
 	 * @param {(app: App) => Promise<void>} fn
 	 */
-	make() {
-		throw new Error('Not implemented');
+	async make(fn) {
+		await this.app.whenReady();
+
+		fn(this);
 	}
 
 	/**
@@ -43,7 +58,7 @@ export class App {
 		const label = this.getLabel();
 
 		if (!this.tray) {
-			this.tray = new this.electron.Tray(icon);
+			this.tray = new this._electron.Tray(icon);
 			this.tray.setToolTip(label);
 		}
 
@@ -56,7 +71,7 @@ export class App {
 	 */
 	createWindow() {
 		if (!this.win) {
-			this.win = new this.electron.BrowserWindow({
+			this.win = new this._electron.BrowserWindow({
 				width: 380,
 				height: 330,
 				show: false,
@@ -98,7 +113,7 @@ export class App {
 	 * @returns {Electron.Menu}
 	 */
 	createMenu(menuItems = []) {
-		return this.electron.Menu.buildFromTemplate(menuItems);
+		return this._electron.Menu.buildFromTemplate(menuItems);
 	}
 
 	/**
@@ -115,7 +130,7 @@ export class App {
 	 * @returns {Electron.NativeImage}
 	 */
 	getIcon(iconName) {
-		return this.electron.nativeImage.createFromPath(
+		return this._electron.nativeImage.createFromPath(
 			path.resolve(__dirname, 'icons', 'main', iconName)
 		);
 	}
