@@ -28,6 +28,8 @@ export class LinuxApp extends App {
 		this.app.commandLine.appendSwitch('disable-gpu-compositing');
 		this.app.commandLine.appendSwitch('disable-gpu-vsync');
 
+		this.app.disableHardwareAcceleration();
+
 		await this.app.whenReady();
 
 		fn(this);
