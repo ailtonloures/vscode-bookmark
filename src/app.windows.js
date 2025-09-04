@@ -38,7 +38,7 @@ export class WindowsApp extends App {
 
 		await this.app.whenReady();
 
-		this.electron.autoUpdater.on('before-quit-for-update', () => {
+		this._electron.autoUpdater.on('before-quit-for-update', () => {
 			this.destroyApp();
 		});
 

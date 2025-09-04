@@ -9,7 +9,7 @@ export class App {
 	constructor(electron) {
 		/**
 		 * @type {Electron}
-		 * @private
+		 * @protected
 		 */
 		this._electron = electron;
 
