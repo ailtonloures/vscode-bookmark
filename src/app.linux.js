@@ -27,6 +27,8 @@ export class LinuxApp extends App {
 		this.app.commandLine.appendSwitch('disable-gpu');
 		this.app.commandLine.appendSwitch('disable-gpu-compositing');
 		this.app.commandLine.appendSwitch('disable-gpu-vsync');
+		this.app.commandLine.appendSwitch('no-sandbox');
+		this.app.commandLine.appendSwitch('disable-dev-shm-usage');
 
 		this.app.disableHardwareAcceleration();
 
